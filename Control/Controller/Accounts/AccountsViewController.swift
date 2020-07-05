@@ -11,6 +11,8 @@ import UIKit
 class AccountsViewController: UIViewController {
 
     @IBOutlet weak var accountsTableView: UITableView!
+  
+    @IBOutlet weak var totalAccounts: UILabel!
     
     //temporary variable to store accounts
     //used while database is not implemented
@@ -22,6 +24,8 @@ class AccountsViewController: UIViewController {
         accountsTableView.dataSource = self
         accountsTableView.register(UINib(nibName: "AccountTableViewCell", bundle: nil), forCellReuseIdentifier: "accountCell")
         accountsTableView.rowHeight = 50
+        
+        loadAccountData()
     }
 
     @IBAction func adicionarContaPressionoado(_ sender: UIBarButtonItem) {
@@ -43,9 +47,9 @@ extension AccountsViewController: UITableViewDataSource {
         let accountCell = accountsTableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! AccountTableViewCell
         
         accountCell.accountName.text = account.name
-        accountCell.accountBalance.text = account.balanceString
+        accountCell.accountBalance.text = account.balance.toCurrency()
         
-        
+        print(account.name)
         return accountCell
         
     }
@@ -63,8 +67,30 @@ extension AccountsViewController: AddNewAccountDelegate {
     
     func newAccountCreated(account: Account) {
         accounts.append(account)
-        accountsTableView.reloadData()
+        loadAccountData()
     }
    
+}
+
+//MARK: - Compute account values
+
+extension AccountsViewController {
+    
+    func loadAccountData(){
+        accountsTableView.reloadData()
+        computeTotalAccounts()
+    }
+    
+    
+    func computeTotalAccounts(){
+        var total = 0.00
+        
+        for account in accounts {
+            total += account.balance
+        }
+        
+        totalAccounts.text = total.toCurrency()
+    }
+    
     
 }

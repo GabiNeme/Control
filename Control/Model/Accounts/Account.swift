@@ -11,6 +11,6 @@ import Foundation
 struct Account {
     
     let name: String
-    var balanceString: String 
+    var balance: Double
     
 }

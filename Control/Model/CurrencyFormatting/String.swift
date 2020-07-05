@@ -19,7 +19,7 @@ extension String {
     }
     
     
-    func extractNumber() -> String{
+    func extractDigitsToString() -> String{
         
         var number = ""
         
@@ -32,4 +32,10 @@ extension String {
         return number
     }
     
+    func extractDigitsToDouble() -> Double{
+        let numberString = self.extractDigitsToString()
+        
+        return (Double(numberString) ?? 0)/100
+        
+    }
 }

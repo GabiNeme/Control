@@ -28,7 +28,7 @@ class CurrencyTextField: UITextField {
         
         guard let currentText = text else {return}
         
-        let currentNumbers = currentText.extractNumber()
+        let currentNumbers = currentText.extractDigitsToString()
         text = currentNumbers.asCurrency()
  
     }

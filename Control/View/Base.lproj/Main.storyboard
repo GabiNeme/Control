@@ -16,16 +16,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ydG-RS-yAL">
+                                <rect key="frame" x="0.0" y="44" width="375" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KNq-bm-ifM">
+                                        <rect key="frame" x="10" y="14.5" width="38" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jo1-Bc-0H2">
+                                        <rect key="frame" x="323" y="14.5" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="FieldBackgroundCollor"/>
+                                <constraints>
+                                    <constraint firstItem="KNq-bm-ifM" firstAttribute="centerY" secondItem="ydG-RS-yAL" secondAttribute="centerY" id="NX2-ua-0x5"/>
+                                    <constraint firstItem="jo1-Bc-0H2" firstAttribute="centerY" secondItem="ydG-RS-yAL" secondAttribute="centerY" id="PC2-Za-1CB"/>
+                                    <constraint firstItem="KNq-bm-ifM" firstAttribute="leading" secondItem="ydG-RS-yAL" secondAttribute="leading" constant="10" id="Va1-3L-J6k"/>
+                                    <constraint firstAttribute="trailing" secondItem="jo1-Bc-0H2" secondAttribute="trailing" constant="10" id="dKb-3E-LKW"/>
+                                    <constraint firstAttribute="height" constant="50" id="fg0-KL-Dtm"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GaP-06-oYh">
-                                <rect key="frame" x="0.0" y="44" width="375" height="574"/>
+                                <rect key="frame" x="0.0" y="94" width="375" height="524"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="ydG-RS-yAL" secondAttribute="trailing" id="1Ze-YO-dpG"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="GaP-06-oYh" secondAttribute="bottom" id="5zF-nc-CoA"/>
-                            <constraint firstItem="GaP-06-oYh" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" id="8yo-Gc-Tzt"/>
+                            <constraint firstItem="ydG-RS-yAL" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="NjH-Jk-asw"/>
+                            <constraint firstItem="GaP-06-oYh" firstAttribute="top" secondItem="ydG-RS-yAL" secondAttribute="bottom" id="SaD-Y4-ea6"/>
                             <constraint firstItem="GaP-06-oYh" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="Yeb-E2-Kf8"/>
+                            <constraint firstItem="ydG-RS-yAL" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" id="oEc-T5-yge"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="GaP-06-oYh" secondAttribute="trailing" id="u2E-GF-v5e"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
@@ -39,12 +67,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="accountsTableView" destination="GaP-06-oYh" id="7Lh-ee-AvV"/>
+                        <outlet property="totalAccounts" destination="jo1-Bc-0H2" id="DBK-jT-crV"/>
                         <segue destination="yTi-OH-Iuk" kind="presentation" identifier="addNewAccount" id="60G-wc-cs6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="762" y="-1011"/>
+            <point key="canvasLocation" x="760.79999999999995" y="-1011.544227886057"/>
         </scene>
         <!--New account-->
         <scene sceneID="09y-BO-Kpf">
@@ -306,6 +335,9 @@
         <image name="second" width="30" height="30"/>
         <namedColor name="ButtonCollor">
             <color red="0.0" green="0.5899999737739563" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="FieldBackgroundCollor">
+            <color red="0.92100000381469727" green="0.92100000381469727" blue="0.92100000381469727" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="LabelCollor">
             <color red="0.26100000739097595" green="0.26100000739097595" blue="0.26100000739097595" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

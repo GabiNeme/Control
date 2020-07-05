@@ -51,7 +51,7 @@ class AddNewAccountViewController: UIViewController {
                 return
             }
 
-            let newAccount = Account(name: accountName.text!, balanceString: currentBalance.text!)
+            let newAccount = Account(name: accountName.text!, balance: currentBalance.text!.extractDigitsToDouble())
 
             delegateSender.newAccountCreated(account: newAccount)
             dismiss(animated: true, completion: nil)
