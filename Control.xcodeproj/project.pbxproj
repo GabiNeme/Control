@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F2ED4CC24B224B900FD541C /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4CB24B224B900FD541C /* CurrencyTextField.swift */; };
+		7F2ED4CF24B22A7200FD541C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4CE24B22A7200FD541C /* String.swift */; };
+		7F2ED4D124B22A7B00FD541C /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4D024B22A7B00FD541C /* Formatter.swift */; };
 		7FAA1F3F24AD768100D00F5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FAA1F3E24AD768100D00F5F /* Assets.xcassets */; };
 		7FB216AE24AD45DD00056736 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216AD24AD45DD00056736 /* AppDelegate.swift */; };
 		7FB216B024AD45DD00056736 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216AF24AD45DD00056736 /* SceneDelegate.swift */; };
@@ -24,6 +27,9 @@
 /* Begin PBXFileReference section */
 		7F03931524B0FB2D0074A688 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Main.strings"; sourceTree = "<group>"; };
 		7F03931624B0FB2D0074A688 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		7F2ED4CB24B224B900FD541C /* CurrencyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
+		7F2ED4CE24B22A7200FD541C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		7F2ED4D024B22A7B00FD541C /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		7FAA1F3E24AD768100D00F5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7FB216AA24AD45DD00056736 /* Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Control.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB216AD24AD45DD00056736 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +57,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F2ED4CA24B2248E00FD541C /* NewUIElements */ = {
+			isa = PBXGroup;
+			children = (
+				7F2ED4CB24B224B900FD541C /* CurrencyTextField.swift */,
+			);
+			path = NewUIElements;
+			sourceTree = "<group>";
+		};
+		7F2ED4CD24B22A5500FD541C /* CurrencyFormatting */ = {
+			isa = PBXGroup;
+			children = (
+				7F2ED4CE24B22A7200FD541C /* String.swift */,
+				7F2ED4D024B22A7B00FD541C /* Formatter.swift */,
+			);
+			path = CurrencyFormatting;
+			sourceTree = "<group>";
+		};
 		7FAA1F4024AD76F600D00F5F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,9 +103,9 @@
 		7FB216AC24AD45DD00056736 /* Control */ = {
 			isa = PBXGroup;
 			children = (
-				7FB216C324AD4B0900056736 /* Model */,
 				7FB216AD24AD45DD00056736 /* AppDelegate.swift */,
 				7FB216AF24AD45DD00056736 /* SceneDelegate.swift */,
+				7FB216C324AD4B0900056736 /* Model */,
 				7FB216C724AD4C5900056736 /* View */,
 				7FB216C824AD4C6900056736 /* Controller */,
 				7FB216BD24AD45E500056736 /* Info.plist */,
@@ -94,6 +117,7 @@
 		7FB216C324AD4B0900056736 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7F2ED4CD24B22A5500FD541C /* CurrencyFormatting */,
 				7FB216C424AD4B1100056736 /* Accounts */,
 			);
 			path = Model;
@@ -120,6 +144,7 @@
 		7FB216C824AD4C6900056736 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7F2ED4CA24B2248E00FD541C /* NewUIElements */,
 				7FAA1F4024AD76F600D00F5F /* Accounts */,
 				7FB216B324AD45DD00056736 /* SecondViewController.swift */,
 				7FB216D024AD696900056736 /* EmptyRequiredField.swift */,
@@ -208,12 +233,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F2ED4D124B22A7B00FD541C /* Formatter.swift in Sources */,
 				7FB216B424AD45DD00056736 /* SecondViewController.swift in Sources */,
 				7FB216C624AD4B5400056736 /* Account.swift in Sources */,
+				7F2ED4CF24B22A7200FD541C /* String.swift in Sources */,
 				7FB216D124AD696900056736 /* EmptyRequiredField.swift in Sources */,
 				7FB216B224AD45DD00056736 /* AccountsViewController.swift in Sources */,
 				7FB216CF24AD619300056736 /* AddNewAccountViewController.swift in Sources */,
 				7FB216CB24AD4CB100056736 /* AccountTableViewCell.swift in Sources */,
+				7F2ED4CC24B224B900FD541C /* CurrencyTextField.swift in Sources */,
 				7FB216AE24AD45DD00056736 /* AppDelegate.swift in Sources */,
 				7FB216B024AD45DD00056736 /* SceneDelegate.swift in Sources */,
 			);
