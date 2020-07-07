@@ -120,7 +120,6 @@
 		7FB216C324AD4B0900056736 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7F2ED4CD24B22A5500FD541C /* CurrencyFormatting */,
 				7FB216C424AD4B1100056736 /* Accounts */,
 			);
 			path = Model;
@@ -147,6 +146,7 @@
 		7FB216C824AD4C6900056736 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7F2ED4CD24B22A5500FD541C /* CurrencyFormatting */,
 				7F2ED4CA24B2248E00FD541C /* NewUIElements */,
 				7FAA1F4024AD76F600D00F5F /* Accounts */,
 				7FB216B324AD45DD00056736 /* SecondViewController.swift */,
