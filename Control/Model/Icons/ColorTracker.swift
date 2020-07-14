@@ -12,11 +12,11 @@ struct ColorTracker {
     
     
     func getColor(index: Int) -> UIColor? {
-        let color = UIColor(hexString: colors[index])
+        let color = UIColor(named: colors[index])
         return color
     }
     
-    func getHex(index: Int) -> String {
+    func getName(index: Int) -> String {
         return colors[index]
     }
     
@@ -26,46 +26,46 @@ struct ColorTracker {
     
     
     private var colors = [
-        "#a29bfe",
-        "#6c5ce7",
-        "#9b59b6",
-        "#8e44ad",
-        "#74b9ff",
-        "#0984e3",
-        "#3498db",
-        "#2980b9",
-        "#81ecec",
-        "#00cec9",
-        "#1abc9c",
-        "#16a085",
-        "#55efc4",
-        "#00b894",
-        "#2ecc71",
-        "#27ae60",
-        "#ffeaa7",
-        "#fdcb6e",
-        "#f1c40f",
-        "#f39c12",
-        "#fab1a0",
-        "#e17055",
-        "#e67e22",
-        "#d35400",
-        "#ff7675",
-        "#d63031",
-        "#e74c3c",
-        "#c0392b",
-        "#fd79a8",
-        "#e84393",
-        "#ef5777",
-        "#f53b57",
-        "#636e72",
-        "#34495e",
-        "#2c3e50",
-        "#2d3436",
-        "#ecf0f1",
-        "#dfe6e9",
-        "#b2bec3",
-        "#bdc3c7",
+        "purple1",
+        "purple2",
+        "purple3",
+        "purple4",
+        "blue1",
+        "blue2",
+        "blue3",
+        "blue4",
+        "aqua1",
+        "aqua2",
+        "aqua3",
+        "aqua4",
+        "green1",
+        "green2",
+        "green3",
+        "green4",
+        "yellow1",
+        "yellow2",
+        "yellow3",
+        "yellow4",
+        "orange1",
+        "orange2",
+        "orange3",
+        "orange4",
+        "red1",
+        "red2",
+        "red3",
+        "red4",
+        "pink1",
+        "pink2",
+        "pink3",
+        "pink4",
+        "dark-gray1",
+        "dark-gray2",
+        "dark-gray3",
+        "dark-gray4",
+        "gray1",
+        "gray2",
+        "gray3",
+        "gray4"
         
     ]
     

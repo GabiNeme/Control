@@ -8,9 +8,29 @@
 
 import Foundation
 
-struct Account {
+struct Account: Codable {
     
     let name: String
-    var balance: Double
+    let balance: Double
+    let savings: Double
+    let free: Double
+    let iconType: String
+    let iconImage: String
+    let iconColor: String
+    let addToTotal: Bool
+    
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case balance
+        case savings
+        case free
+        case iconType
+        case iconImage
+        case iconColor
+        case addToTotal
+    }
+    
     
 }

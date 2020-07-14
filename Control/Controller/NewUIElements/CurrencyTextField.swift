@@ -28,7 +28,10 @@ class CurrencyTextField: UITextField {
         
         guard let currentText = text else {return}
         
-        let currentNumbers = currentText.extractDigitsToString()
+        var currentNumbers = currentText.extractDigitsToString()
+        if currentNumbers.count > 11 {
+            currentNumbers = "99999999999"
+        }
         text = currentNumbers.asCurrency()
  
     }

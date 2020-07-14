@@ -9,7 +9,7 @@
 import UIKit
 
 protocol IconColorSelectorDelegate {
-    func iconColorSelected(color: UIColor?)
+    func iconColorSelected(color: String)
 }
 
 class IconColorViewController: UIViewController {
@@ -40,7 +40,7 @@ class IconColorViewController: UIViewController {
 extension IconColorViewController: UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate.iconColorSelected(color: colors.getColor(index: indexPath.item))
+        delegate.iconColorSelected(color: colors.getName(index: indexPath.item))
         dismiss(animated: true, completion: nil)
     }
 }

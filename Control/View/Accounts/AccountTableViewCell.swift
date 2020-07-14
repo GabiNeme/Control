@@ -10,13 +10,21 @@ import UIKit
 
 class AccountTableViewCell: UITableViewCell {
 
+    
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var iconColorImageView: UIImageView!
+    
     @IBOutlet weak var accountName: UILabel!
     @IBOutlet weak var accountBalance: UILabel!
-    
+    @IBOutlet weak var accountSavings: UILabel!
+    @IBOutlet weak var accountFree: UILabel!
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.contentView.autoresizingMask = .flexibleHeight
+        
+        iconColorImageView.layer.cornerRadius = 25
         // Initialization code
     }
 

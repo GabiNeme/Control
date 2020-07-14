@@ -15,13 +15,16 @@ protocol AddNewAccountDelegate {
 class AddNewAccountViewController: UIViewController {
 
     @IBOutlet weak var closeBarButton: UIButton!
-    @IBOutlet weak var currentBalance: UITextField!
     @IBOutlet weak var addAccountButton: UIButton!
-
+    
+    @IBOutlet weak var accountNameTextField: UITextField!
+    @IBOutlet weak var currentBalanceTextField: UITextField!
+    @IBOutlet weak var addToTotalSwitch: UISwitch!
+    
     @IBOutlet weak var iconUIButton: UIButton!
-    @IBOutlet weak var topIconImage: UIImageView!
-    @IBOutlet weak var iconColor: UIImageView!
-    @IBOutlet weak var iconImage: UIImageView!
+    @IBOutlet weak var topIconImageView: UIImageView!
+    @IBOutlet weak var iconColorImageView: UIImageView!
+    @IBOutlet weak var iconImageView: UIImageView!
     
     
     @IBOutlet weak var iconColorStackView: UIStackView!
@@ -30,15 +33,23 @@ class AddNewAccountViewController: UIViewController {
     
     var delegate: AddNewAccountDelegate!
     
+    //Account Elements
+    var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
+    var iconColor: String = "gray4"
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         view.addGestureRecognizer(tap)
         
+        updateIconImage()
+        updateIconColor()
+        
         closeBarButton.layer.cornerRadius = 2.5
-        topIconImage.layer.cornerRadius = 50
-        iconColor.layer.cornerRadius = 20
+        iconUIButton.layer.cornerRadius = 50
+        iconColorImageView.layer.cornerRadius = 20
         
         let tapIconColor = UITapGestureRecognizer(target: self, action: #selector(iconColorTapped))
         iconColorStackView.addGestureRecognizer(tapIconColor)
@@ -71,18 +82,27 @@ class AddNewAccountViewController: UIViewController {
 //            EmptyRequiredField().animateField(uiView: balanceFieldView)
 //        }
 //
-//        if accountName.text != "" && currentBalance.text != ""{
-//
-//            guard let delegateSender = delegate else {
-//                print("Delegate method to create new account not set")
-//                return
-//            }
-//
-//            let newAccount = Account(name: accountName.text!, balance: currentBalance.text!.extractDigitsToDouble())
-//
-//            delegateSender.newAccountCreated(account: newAccount)
-//            dismiss(animated: true, completion: nil)
-//        }
+        if accountNameTextField.text != "" && currentBalanceTextField.text != ""{
+
+            guard let delegateSender = delegate else {
+                print("Delegate method to create new account not set")
+                return
+            }
+
+            let newAccount = Account(
+                name: accountNameTextField.text!,
+                balance: currentBalanceTextField.text!.extractDigitsToDouble(),
+                savings: 0,
+                free: currentBalanceTextField.text!.extractDigitsToDouble(),
+                iconType: iconImage.typeString,
+                iconImage: iconImage.name,
+                iconColor: iconColor,
+                addToTotal: addToTotalSwitch.isOn
+            )
+
+            delegateSender.newAccountCreated(account: newAccount)
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func closeBottomButtonPressed(_ sender: UIButton) {
@@ -104,20 +124,31 @@ class AddNewAccountViewController: UIViewController {
             
         }
     }
+    
+    func updateIconImage(){
+        topIconImageView.image = iconImage.getImage()
+        iconImageView.image = iconImage.getImage()
+    }
+    
+    func updateIconColor(){
+        iconUIButton.backgroundColor = UIColor(named: iconColor)
+        iconColorImageView.backgroundColor = UIColor(named: iconColor)
+    }
 
 }
 
 extension AddNewAccountViewController : IconImageSelectorDelegate {
     func iconImageSelected(image: IconImage) {
-        topIconImage.image = image.getImage()
-        iconImage.image = image.getImage()
+        iconImage = image
+        updateIconImage()
+        
     }
 }
 
 extension AddNewAccountViewController: IconColorSelectorDelegate {
-    func iconColorSelected(color: UIColor?) {
-        topIconImage.backgroundColor = color
-        iconColor.backgroundColor = color
+    func iconColorSelected(color: String) {
+        iconColor = color
+        updateIconColor()
     }
     
     

@@ -18,11 +18,7 @@ class AccountsViewController: UIViewController {
     
     //temporary variable to store accounts
     //used while database is not implemented
-    var accounts: [Account] = [
-        Account(name: "Inter", balance: 500.00),
-        Account(name: "Nubank", balance: 3456.97),
-        Account(name: "Carteira", balance: 196.50)
-    ]
+    var accounts: [Account] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +27,7 @@ class AccountsViewController: UIViewController {
         accountsTableView.delegate = self
         
         accountsTableView.register(UINib(nibName: "AccountTableViewCell", bundle: nil), forCellReuseIdentifier: "accountCell")
-        accountsTableView.rowHeight = 50
+        accountsTableView.rowHeight = 70
         
         loadAccountData()
     }
@@ -68,8 +64,13 @@ extension AccountsViewController: UITableViewDataSource {
         
         let accountCell = accountsTableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! AccountTableViewCell
         
+        accountCell.iconImageView.image = IconImage(typeString: account.iconType, name: account.iconImage).getImage()
+        accountCell.iconColorImageView.backgroundColor = UIColor(named: account.iconColor)
+        
         accountCell.accountName.text = account.name
         accountCell.accountBalance.text = account.balance.toCurrency()
+        accountCell.accountSavings.text = account.savings.toCurrency()
+        accountCell.accountFree.text = account.free.toCurrency()
         
         return accountCell
     }
