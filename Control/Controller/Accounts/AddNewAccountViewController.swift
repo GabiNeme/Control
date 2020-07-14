@@ -18,9 +18,15 @@ class AddNewAccountViewController: UIViewController {
     @IBOutlet weak var currentBalance: UITextField!
     @IBOutlet weak var addAccountButton: UIButton!
 
-    @IBOutlet weak var accountIcon: UIButton!
+    @IBOutlet weak var iconUIButton: UIButton!
+    @IBOutlet weak var topIconImage: UIImageView!
     @IBOutlet weak var iconColor: UIImageView!
     @IBOutlet weak var iconImage: UIImageView!
+    
+    
+    @IBOutlet weak var iconColorStackView: UIStackView!
+    @IBOutlet weak var iconImageStackView: UIStackView!
+    
     
     var delegate: AddNewAccountDelegate!
     
@@ -31,15 +37,28 @@ class AddNewAccountViewController: UIViewController {
         view.addGestureRecognizer(tap)
         
         closeBarButton.layer.cornerRadius = 2.5
-        accountIcon.layer.cornerRadius = 50
+        topIconImage.layer.cornerRadius = 50
         iconColor.layer.cornerRadius = 20
-        iconImage.layer.cornerRadius = 20
         
+        let tapIconColor = UITapGestureRecognizer(target: self, action: #selector(iconColorTapped))
+        iconColorStackView.addGestureRecognizer(tapIconColor)
+        
+        let tapIconImage = UITapGestureRecognizer(target: self, action: #selector(iconImageTapped))
+        iconImageStackView.addGestureRecognizer(tapIconImage)
+        
+
     }
     
 
     @IBAction func accountIconPressed(_ sender: UIButton) {
         performSegue(withIdentifier: "selectIconImage", sender: self)
+    }
+    @objc func iconImageTapped(sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "selectIconImage", sender: self)
+    }
+    
+    @objc func iconColorTapped(sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "selectIconColor", sender: self)
     }
     
     @IBAction func createNewAccountPressed(_ sender: UIButton) {
@@ -66,9 +85,41 @@ class AddNewAccountViewController: UIViewController {
 //        }
     }
     
+    @IBAction func closeBottomButtonPressed(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func closeBarButtonPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "selectIconImage" {
+            let destinationSegue = segue.destination as! IconImageViewController
+            destinationSegue.delegate = self
+        }else if segue.identifier == "selectIconColor" {
+            let destinationSegue = segue.destination as! IconColorViewController
+            destinationSegue.delegate = self
+            
+        }
+    }
 
+}
+
+extension AddNewAccountViewController : IconImageSelectorDelegate {
+    func iconImageSelected(image: IconImage) {
+        topIconImage.image = image.getImage()
+        iconImage.image = image.getImage()
+    }
+}
+
+extension AddNewAccountViewController: IconColorSelectorDelegate {
+    func iconColorSelected(color: UIColor?) {
+        topIconImage.backgroundColor = color
+        iconColor.backgroundColor = color
+    }
+    
+    
+    
 }

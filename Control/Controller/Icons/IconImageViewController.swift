@@ -8,10 +8,16 @@
 
 import UIKit
 
+protocol IconImageSelectorDelegate {
+    func iconImageSelected(image: IconImage)
+}
+
 class IconImageViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var closerBarButton: UIButton!
+    
+    var delegate: IconImageSelectorDelegate!
     
     let images = ImageTracker()
     
@@ -33,6 +39,10 @@ class IconImageViewController: UIViewController {
 
 extension IconImageViewController: UICollectionViewDelegate{
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate.iconImageSelected(image: images.getImage(index: indexPath.item))
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 extension IconImageViewController: UICollectionViewDataSource {

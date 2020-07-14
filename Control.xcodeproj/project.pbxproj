@@ -11,6 +11,9 @@
 		7F2ED4CF24B22A7200FD541C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4CE24B22A7200FD541C /* String.swift */; };
 		7F2ED4D124B22A7B00FD541C /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4D024B22A7B00FD541C /* Formatter.swift */; };
 		7F2ED4D324B26C2600FD541C /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4D224B26C2600FD541C /* Double.swift */; };
+		7F340C5224BD483200427635 /* ColorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F340C5124BD483200427635 /* ColorTracker.swift */; };
+		7F340C5424BD4ABE00427635 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F340C5324BD4ABE00427635 /* UIColor.swift */; };
+		7F340C5624BD4C0B00427635 /* IconColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F340C5524BD4C0B00427635 /* IconColorViewController.swift */; };
 		7F62B39E24BB9EAF00D5998D /* IconImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F62B39C24BB9EAF00D5998D /* IconImageCollectionViewCell.swift */; };
 		7F62B39F24BB9EAF00D5998D /* IconImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F62B39D24BB9EAF00D5998D /* IconImageCollectionViewCell.xib */; };
 		7F6FC6A124BBA90F00A0685A /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6FC6A024BBA90F00A0685A /* Icon.swift */; };
@@ -38,6 +41,9 @@
 		7F2ED4CE24B22A7200FD541C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		7F2ED4D024B22A7B00FD541C /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		7F2ED4D224B26C2600FD541C /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		7F340C5124BD483200427635 /* ColorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTracker.swift; sourceTree = "<group>"; };
+		7F340C5324BD4ABE00427635 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		7F340C5524BD4C0B00427635 /* IconColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconColorViewController.swift; sourceTree = "<group>"; };
 		7F62B39C24BB9EAF00D5998D /* IconImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		7F62B39D24BB9EAF00D5998D /* IconImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IconImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		7F6FC6A024BBA90F00A0685A /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
@@ -79,14 +85,15 @@
 			path = NewUIElements;
 			sourceTree = "<group>";
 		};
-		7F2ED4CD24B22A5500FD541C /* CurrencyFormatting */ = {
+		7F2ED4CD24B22A5500FD541C /* NativeExtensions */ = {
 			isa = PBXGroup;
 			children = (
 				7F2ED4CE24B22A7200FD541C /* String.swift */,
 				7F2ED4D024B22A7B00FD541C /* Formatter.swift */,
 				7F2ED4D224B26C2600FD541C /* Double.swift */,
+				7F340C5324BD4ABE00427635 /* UIColor.swift */,
 			);
-			path = CurrencyFormatting;
+			path = NativeExtensions;
 			sourceTree = "<group>";
 		};
 		7F62B3A024BB9EC500D5998D /* IconImage */ = {
@@ -104,6 +111,7 @@
 				7F6FC6A024BBA90F00A0685A /* Icon.swift */,
 				7F6FC6A224BBA93800A0685A /* IconImage.swift */,
 				7F6FC6A424BBBB9900A0685A /* ImageTracker.swift */,
+				7F340C5124BD483200427635 /* ColorTracker.swift */,
 			);
 			path = Icons;
 			sourceTree = "<group>";
@@ -112,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				7F993BD324BB9AFB00ED479E /* IconImageViewController.swift */,
+				7F340C5524BD4C0B00427635 /* IconColorViewController.swift */,
 			);
 			path = Icons;
 			sourceTree = "<group>";
@@ -187,7 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				7F993BD224BB9ABC00ED479E /* Icons */,
-				7F2ED4CD24B22A5500FD541C /* CurrencyFormatting */,
+				7F2ED4CD24B22A5500FD541C /* NativeExtensions */,
 				7F2ED4CA24B2248E00FD541C /* NewUIElements */,
 				7FAA1F4024AD76F600D00F5F /* Accounts */,
 				7FB216B324AD45DD00056736 /* SecondViewController.swift */,
@@ -287,8 +296,10 @@
 				7FB216D124AD696900056736 /* EmptyRequiredField.swift in Sources */,
 				7F6FC6A524BBBB9900A0685A /* ImageTracker.swift in Sources */,
 				7F6FC6A324BBA93800A0685A /* IconImage.swift in Sources */,
+				7F340C5424BD4ABE00427635 /* UIColor.swift in Sources */,
 				7FB216B224AD45DD00056736 /* AccountsViewController.swift in Sources */,
 				7FB216CF24AD619300056736 /* AddNewAccountViewController.swift in Sources */,
+				7F340C5224BD483200427635 /* ColorTracker.swift in Sources */,
 				7FB216CB24AD4CB100056736 /* AccountTableViewCell.swift in Sources */,
 				7F2ED4CC24B224B900FD541C /* CurrencyTextField.swift in Sources */,
 				7F62B39E24BB9EAF00D5998D /* IconImageCollectionViewCell.swift in Sources */,
@@ -296,6 +307,7 @@
 				7F993BD424BB9AFB00ED479E /* IconImageViewController.swift in Sources */,
 				7F2ED4D324B26C2600FD541C /* Double.swift in Sources */,
 				7FB216B024AD45DD00056736 /* SceneDelegate.swift in Sources */,
+				7F340C5624BD4C0B00427635 /* IconColorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
