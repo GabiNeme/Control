@@ -7,29 +7,56 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Account: Codable {
+class Account: Object {
     
-    let name: String
-    let balance: Double
-    let savings: Double
-    let free: Double
-    let iconType: String
-    let iconImage: String
-    let iconColor: String
-    let addToTotal: Bool
+    @objc dynamic var name: String = ""
+    @objc dynamic var balance: Double = 0.0
+    @objc dynamic var savings: Double = 0.0
+    @objc dynamic var available: Double = 0.0
+    
+    @objc dynamic var iconType: String = ""
+    @objc dynamic var iconImage: String = ""
+    @objc dynamic var iconColor: String = ""
+    
+    @objc dynamic var addToTotal: Bool = true
+    @objc dynamic var listPosition: Int = 0
+    
+    init(name: String, balance: Double, iconImage: IconImage, iconColor: String, addToTotal: Bool){
+        
+        self.name = name
+        self.balance = balance
+        self.savings = 0.0
+        self.available = balance
+        
+        self.iconType = iconImage.typeString
+        self.iconImage = iconImage.name
+        self.iconColor = iconColor
+        
+        self.addToTotal = addToTotal
+        
+        self.listPosition = AccountsModel().getNextAccountPosition()
+        
+    }
+    
+    required init() {
+        //fatalError("init() has not been implemented")
+    }
     
     
-    
-    enum CodingKeys: String, CodingKey {
-        case name
-        case balance
-        case savings
-        case free
-        case iconType
-        case iconImage
-        case iconColor
-        case addToTotal
+    func save(){
+        
+        let realm = try! Realm()
+        
+        do{
+            try realm.write {
+                realm.add(self)
+            }
+        }catch{
+            print("Error saving new account: \(error)")
+        }
+        
     }
     
     

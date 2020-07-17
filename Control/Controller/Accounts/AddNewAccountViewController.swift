@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol AddNewAccountDelegate {
-    func newAccountCreated(account: Account)
+protocol newAccountAddedDelegate {
+    func newAccountAdded()
 }
 
 class AddNewAccountViewController: UIViewController {
@@ -29,13 +29,11 @@ class AddNewAccountViewController: UIViewController {
     
     @IBOutlet weak var iconColorStackView: UIStackView!
     @IBOutlet weak var iconImageStackView: UIStackView!
-    
-    
-    var delegate: AddNewAccountDelegate!
-    
+        
     //Account Elements
     var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
     var iconColor: String = "gray4"
+    var delegate: newAccountAddedDelegate!
     
     
     override func viewDidLoad() {
@@ -82,25 +80,26 @@ class AddNewAccountViewController: UIViewController {
 //            EmptyRequiredField().animateField(uiView: balanceFieldView)
 //        }
 //
+        
         if accountNameTextField.text != "" && currentBalanceTextField.text != ""{
 
-            guard let delegateSender = delegate else {
-                print("Delegate method to create new account not set")
-                return
-            }
 
             let newAccount = Account(
                 name: accountNameTextField.text!,
                 balance: currentBalanceTextField.text!.extractDigitsToDouble(),
-                savings: 0,
-                free: currentBalanceTextField.text!.extractDigitsToDouble(),
-                iconType: iconImage.typeString,
-                iconImage: iconImage.name,
+                iconImage: iconImage,
                 iconColor: iconColor,
                 addToTotal: addToTotalSwitch.isOn
             )
-
-            delegateSender.newAccountCreated(account: newAccount)
+            
+            newAccount.save()
+            
+            guard let existingDelegate = delegate else {
+                fatalError("newAccountAddedDelegate not set")
+            }
+            
+            existingDelegate.newAccountAdded()
+            
             dismiss(animated: true, completion: nil)
         }
     }

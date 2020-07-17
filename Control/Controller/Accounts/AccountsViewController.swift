@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AccountsViewController: UIViewController {
 
@@ -14,31 +15,36 @@ class AccountsViewController: UIViewController {
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBOutlet weak var accountsTableView: UITableView!
-    @IBOutlet weak var totalAccounts: UILabel!
     
-    //temporary variable to store accounts
-    //used while database is not implemented
-    var accounts: [Account] = []
+    @IBOutlet weak var totalBalanceValue: UILabel!
+    @IBOutlet weak var savingsValue: UILabel!
+    @IBOutlet weak var availableBalance: UILabel!
+    
+    let realm = try! Realm()
+    
+    var accounts: Results<Account>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         accountsTableView.dataSource = self
         accountsTableView.delegate = self
         
         accountsTableView.register(UINib(nibName: "AccountTableViewCell", bundle: nil), forCellReuseIdentifier: "accountCell")
         accountsTableView.rowHeight = 70
         
+        accounts = realm.objects(Account.self).sorted(byKeyPath: "listPosition")
         loadAccountData()
     }
 
+    
     @IBAction func addAccountPressed(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addNewAccount", sender: self)
     }
     
     @IBAction func editAccountsPressed(_ sender: UIBarButtonItem) {
         
-         accountsTableView.setEditing(!accountsTableView.isEditing, animated: true)
+        accountsTableView.setEditing(!accountsTableView.isEditing, animated: true)
         
         addButton.isEnabled = !addButton.isEnabled
         
@@ -56,21 +62,22 @@ class AccountsViewController: UIViewController {
 
 extension AccountsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return accounts.count
+        return accounts?.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let account = accounts[indexPath.row]
         
         let accountCell = accountsTableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! AccountTableViewCell
         
-        accountCell.iconImageView.image = IconImage(typeString: account.iconType, name: account.iconImage).getImage()
-        accountCell.iconColorImageView.backgroundColor = UIColor(named: account.iconColor)
-        
-        accountCell.accountName.text = account.name
-        accountCell.accountBalance.text = account.balance.toCurrency()
-        accountCell.accountSavings.text = account.savings.toCurrency()
-        accountCell.accountFree.text = account.free.toCurrency()
+        if let account = accounts?[indexPath.row] {
+            accountCell.iconImageView.image = IconImage(typeString: account.iconType, name: account.iconImage).getImage()
+            accountCell.iconColorImageView.backgroundColor = UIColor(named: account.iconColor)
+            
+            accountCell.accountName.text = account.name
+            accountCell.accountBalance.text = account.balance.toCurrency()
+            accountCell.accountSavings.text = account.savings.toCurrency()
+            accountCell.accountFree.text = account.available.toCurrency()
+        }
         
         return accountCell
     }
@@ -86,17 +93,19 @@ extension AccountsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        let tempAccount = accounts[sourceIndexPath.row]
-        accounts.remove(at: sourceIndexPath.row)
-        accounts.insert(tempAccount, at: destinationIndexPath.row)
+        if let account1 = accounts?[sourceIndexPath.row], let account2 = accounts?[destinationIndexPath.row] {
+            AccountsModel().swapAccounts(account1: account1, account2: account2)
+        }
+
         
     }
     
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            accounts.remove(at: indexPath.row)
-            accountsTableView.deleteRows(at: [indexPath], with: .automatic)
+            if let account = accounts?[indexPath.row] {
+                AccountsModel().deleteAccount(account: account)
+            }
         }
         loadAccountData()
     }
@@ -104,22 +113,24 @@ extension AccountsViewController: UITableViewDelegate {
     
 }
 
+//MARK: - Add new account
 
-//MARK: - AddNewAccountDelegate
-
-extension AccountsViewController: AddNewAccountDelegate {
+extension AccountsViewController: newAccountAddedDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destinationSegue = segue.destination as! AddNewAccountViewController
-        destinationSegue.delegate = self
+        if segue.identifier == "addNewAccount" {
+            let addNewAccountViewController = segue.destination as! AddNewAccountViewController
+            addNewAccountViewController.delegate = self
+            
+        }
     }
     
     
-    func newAccountCreated(account: Account) {
-        accounts.append(account)
+    
+    func newAccountAdded() {
         loadAccountData()
     }
-   
+
 }
 
 //MARK: - Compute account values
@@ -127,6 +138,7 @@ extension AccountsViewController: AddNewAccountDelegate {
 extension AccountsViewController {
     
     func loadAccountData(){
+        
         accountsTableView.reloadData()
         computeTotalAccounts()
     }
@@ -134,12 +146,20 @@ extension AccountsViewController {
     
     func computeTotalAccounts(){
         var total = 0.00
+        var savings = 0.00
+        var available = 0.00
         
-        for account in accounts {
-            total += account.balance
+        if let existingAccounts = accounts {
+            for account in existingAccounts {
+                total += account.balance
+                savings += account.savings
+                available += account.available
+            }
         }
-        
-        totalAccounts.text = total.toCurrency()
+
+        totalBalanceValue.text = total.toCurrency()
+        savingsValue.text = savings.toCurrency()
+        availableBalance.text = available.toCurrency()
     }
     
     
