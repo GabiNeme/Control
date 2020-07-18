@@ -59,5 +59,29 @@ class Account: Object {
         
     }
     
+    func edit(changeTo account: Account){
+        
+        let realm = try! Realm()
+        
+        do{
+            try realm.write {
+                self.name = account.name
+                self.balance = account.balance
+                self.savings = account.savings
+                self.available = account.savings
+                
+                self.iconType = account.iconType
+                self.iconImage = account.iconImage
+                self.iconColor = account.iconColor
+                
+                self.addToTotal = account.addToTotal
+                
+                self.listPosition = account.listPosition
+            }
+        }catch{
+            print("Error saving new account: \(error)")
+        }
+        
+    }
     
 }

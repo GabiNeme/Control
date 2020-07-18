@@ -34,6 +34,9 @@ class AccountsViewController: UIViewController {
         accountsTableView.rowHeight = 70
         
         accounts = realm.objects(Account.self).sorted(byKeyPath: "listPosition")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         loadAccountData()
     }
 
@@ -119,11 +122,11 @@ extension AccountsViewController: UITableViewDelegate {
 
 //MARK: - Add new account
 
-extension AccountsViewController: newAccountAddedDelegate {
+extension AccountsViewController: setAccountDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addNewAccount" {
-            let addNewAccountViewController = segue.destination as! AddNewAccountViewController
+            let addNewAccountViewController = segue.destination as! SetAccountViewController
             addNewAccountViewController.delegate = self
             
         }else if segue.identifier == "viewAccount" {
@@ -137,7 +140,7 @@ extension AccountsViewController: newAccountAddedDelegate {
         }
     }
     
-    func newAccountAdded() {
+    func accountDataChaged() {
         loadAccountData()
     }
 
@@ -161,9 +164,11 @@ extension AccountsViewController {
         
         if let existingAccounts = accounts {
             for account in existingAccounts {
-                total += account.balance
-                savings += account.savings
-                available += account.available
+                if account.addToTotal{
+                    total += account.balance
+                    savings += account.savings
+                    available += account.available
+                }
             }
         }
 

@@ -32,7 +32,7 @@
 		7FB216C624AD4B5400056736 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216C524AD4B5400056736 /* Account.swift */; };
 		7FB216CB24AD4CB100056736 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216C924AD4CB100056736 /* AccountTableViewCell.swift */; };
 		7FB216CC24AD4CB100056736 /* AccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB216CA24AD4CB100056736 /* AccountTableViewCell.xib */; };
-		7FB216CF24AD619300056736 /* AddNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216CE24AD619300056736 /* AddNewAccountViewController.swift */; };
+		7FB216CF24AD619300056736 /* SetAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216CE24AD619300056736 /* SetAccountViewController.swift */; };
 		7FB216D124AD696900056736 /* EmptyRequiredField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216D024AD696900056736 /* EmptyRequiredField.swift */; };
 		7FC7378B24C345B300C2E3E9 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */; };
 /* End PBXBuildFile section */
@@ -66,7 +66,7 @@
 		7FB216C524AD4B5400056736 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7FB216C924AD4CB100056736 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		7FB216CA24AD4CB100056736 /* AccountTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountTableViewCell.xib; sourceTree = "<group>"; };
-		7FB216CE24AD619300056736 /* AddNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAccountViewController.swift; sourceTree = "<group>"; };
+		7FB216CE24AD619300056736 /* SetAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAccountViewController.swift; sourceTree = "<group>"; };
 		7FB216D024AD696900056736 /* EmptyRequiredField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRequiredField.swift; sourceTree = "<group>"; };
 		7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		E2330706C19F4EDA86AB9D39 /* Pods_Control.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Control.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,7 +154,7 @@
 			children = (
 				7FB216B124AD45DD00056736 /* AccountsViewController.swift */,
 				7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */,
-				7FB216CE24AD619300056736 /* AddNewAccountViewController.swift */,
+				7FB216CE24AD619300056736 /* SetAccountViewController.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -372,7 +372,7 @@
 				7F340C5424BD4ABE00427635 /* UIColor.swift in Sources */,
 				7FC7378B24C345B300C2E3E9 /* AccountViewController.swift in Sources */,
 				7FB216B224AD45DD00056736 /* AccountsViewController.swift in Sources */,
-				7FB216CF24AD619300056736 /* AddNewAccountViewController.swift in Sources */,
+				7FB216CF24AD619300056736 /* SetAccountViewController.swift in Sources */,
 				7F340C5224BD483200427635 /* ColorTracker.swift in Sources */,
 				7FB216CB24AD4CB100056736 /* AccountTableViewCell.swift in Sources */,
 				7F2ED4CC24B224B900FD541C /* CurrencyTextField.swift in Sources */,

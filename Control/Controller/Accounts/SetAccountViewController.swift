@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol newAccountAddedDelegate {
-    func newAccountAdded()
+protocol setAccountDelegate {
+    func accountDataChaged()
 }
 
-class AddNewAccountViewController: UIViewController {
+class SetAccountViewController: UIViewController {
 
     @IBOutlet weak var closeBarButton: UIButton!
     @IBOutlet weak var addAccountButton: UIButton!
@@ -33,7 +33,10 @@ class AddNewAccountViewController: UIViewController {
     //Account Elements
     var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
     var iconColor: String = "gray4"
-    var delegate: newAccountAddedDelegate!
+    
+    var editingAccount: Account?
+    
+    var delegate: setAccountDelegate!
     
     
     override func viewDidLoad() {
@@ -41,9 +44,6 @@ class AddNewAccountViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         view.addGestureRecognizer(tap)
-        
-        updateIconImage()
-        updateIconColor()
         
         closeBarButton.layer.cornerRadius = 2.5
         iconUIButton.layer.cornerRadius = 50
@@ -55,7 +55,7 @@ class AddNewAccountViewController: UIViewController {
         let tapIconImage = UITapGestureRecognizer(target: self, action: #selector(iconImageTapped))
         iconImageStackView.addGestureRecognizer(tapIconImage)
         
-
+        loadAccount()
     }
     
 
@@ -70,40 +70,6 @@ class AddNewAccountViewController: UIViewController {
         performSegue(withIdentifier: "selectIconColor", sender: self)
     }
     
-    @IBAction func createNewAccountPressed(_ sender: UIButton) {
-
-        
-//        if accountName.text == nil || accountName.text == "" {
-//            EmptyRequiredField().animateField(uiView: nameFieldView)
-//        }
-//        if currentBalance.text == nil || currentBalance.text == "" {
-//            EmptyRequiredField().animateField(uiView: balanceFieldView)
-//        }
-//
-        
-        if accountNameTextField.text != "" && currentBalanceTextField.text != ""{
-
-
-            let newAccount = Account(
-                name: accountNameTextField.text!,
-                balance: currentBalanceTextField.text!.extractDigitsToDouble(),
-                iconImage: iconImage,
-                iconColor: iconColor,
-                addToTotal: addToTotalSwitch.isOn
-            )
-            
-            newAccount.save()
-            
-            guard let existingDelegate = delegate else {
-                fatalError("newAccountAddedDelegate not set")
-            }
-            
-            existingDelegate.newAccountAdded()
-            
-            dismiss(animated: true, completion: nil)
-        }
-    }
-    
     @IBAction func closeBottomButtonPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -111,8 +77,82 @@ class AddNewAccountViewController: UIViewController {
     @IBAction func closeBarButtonPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
+
+}
+
+
+//MARK: - Confirm button pressed
+
+extension SetAccountViewController{
     
+    @IBAction func createNewAccountPressed(_ sender: UIButton) {
+
+        
+        if accountNameTextField.text == nil || accountNameTextField.text == "" {
+            let alert = UIAlertController(title: "Preencher nome da conta", message: "A conta não pode ser criada sem um nome", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in })
+            present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        if currentBalanceTextField.text == nil || currentBalanceTextField.text == "" {
+            currentBalanceTextField.text = "0.00"
+        }
+        
+        guard let existingDelegate = delegate else {
+            fatalError("newAccountAddedDelegate not set")
+        }
+        
+        let newAccount = Account(
+            name: accountNameTextField.text!,
+            balance: currentBalanceTextField.text!.extractDigitsToDouble(),
+            iconImage: iconImage,
+            iconColor: iconColor,
+            addToTotal: addToTotalSwitch.isOn
+        )
+        
+        if let modifiedAccount = editingAccount {
+            newAccount.savings = modifiedAccount.savings
+            newAccount.available = newAccount.balance - modifiedAccount.savings
+            newAccount.listPosition = modifiedAccount.listPosition
+            modifiedAccount.edit(changeTo: newAccount)
+        }else{
+            newAccount.save()
+        }
+
+        existingDelegate.accountDataChaged()
+        dismiss(animated: true, completion: nil)
+        
+    }
+}
+
+
+//MARK: - Editing existing account
+
+extension SetAccountViewController {
+    func loadAccount(){
+        
+        if let account = editingAccount {
+            iconImage = IconImage(typeString: account.iconType, name: account.iconImage)
+            iconColor = account.iconColor
+            
+            accountNameTextField.text = account.name
+            currentBalanceTextField.text = account.balance.toCurrency()
+            addToTotalSwitch.isOn = account.addToTotal
+        }
+        
+        updateIconColor()
+        updateIconImage()
+    }
+}
+
+
     
+
+//MARK: - Icon color and image
+
+extension SetAccountViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectIconImage" {
             let destinationSegue = segue.destination as! IconImageViewController
@@ -123,33 +163,31 @@ class AddNewAccountViewController: UIViewController {
             
         }
     }
+}
+
+
+extension SetAccountViewController : IconImageSelectorDelegate {
+    func iconImageSelected(image: IconImage) {
+        iconImage = image
+        updateIconImage()
+        
+    }
     
     func updateIconImage(){
         topIconImageView.image = iconImage.getImage()
         iconImageView.image = iconImage.getImage()
+    }
+}
+
+extension SetAccountViewController: IconColorSelectorDelegate {
+    func iconColorSelected(color: String) {
+        iconColor = color
+        updateIconColor()
     }
     
     func updateIconColor(){
         iconUIButton.backgroundColor = UIColor(named: iconColor)
         iconColorImageView.backgroundColor = UIColor(named: iconColor)
     }
-
-}
-
-extension AddNewAccountViewController : IconImageSelectorDelegate {
-    func iconImageSelected(image: IconImage) {
-        iconImage = image
-        updateIconImage()
-        
-    }
-}
-
-extension AddNewAccountViewController: IconColorSelectorDelegate {
-    func iconColorSelected(color: String) {
-        iconColor = color
-        updateIconColor()
-    }
-    
-    
     
 }
