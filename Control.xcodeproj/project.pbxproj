@@ -34,6 +34,7 @@
 		7FB216CC24AD4CB100056736 /* AccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB216CA24AD4CB100056736 /* AccountTableViewCell.xib */; };
 		7FB216CF24AD619300056736 /* AddNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216CE24AD619300056736 /* AddNewAccountViewController.swift */; };
 		7FB216D124AD696900056736 /* EmptyRequiredField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216D024AD696900056736 /* EmptyRequiredField.swift */; };
+		7FC7378B24C345B300C2E3E9 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		7FB216CA24AD4CB100056736 /* AccountTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountTableViewCell.xib; sourceTree = "<group>"; };
 		7FB216CE24AD619300056736 /* AddNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAccountViewController.swift; sourceTree = "<group>"; };
 		7FB216D024AD696900056736 /* EmptyRequiredField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRequiredField.swift; sourceTree = "<group>"; };
+		7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		E2330706C19F4EDA86AB9D39 /* Pods_Control.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Control.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				7FB216B124AD45DD00056736 /* AccountsViewController.swift */,
+				7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */,
 				7FB216CE24AD619300056736 /* AddNewAccountViewController.swift */,
 			);
 			path = Accounts;
@@ -278,7 +281,7 @@
 			};
 			buildConfigurationList = 7FB216A524AD45DD00056736 /* Build configuration list for PBXProject "Control" */;
 			compatibilityVersion = "Xcode 9.3";
-			developmentRegion = pt-BR;
+			developmentRegion = "pt-BR";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -367,6 +370,7 @@
 				7F6FC6A524BBBB9900A0685A /* ImageTracker.swift in Sources */,
 				7F6FC6A324BBA93800A0685A /* IconImage.swift in Sources */,
 				7F340C5424BD4ABE00427635 /* UIColor.swift in Sources */,
+				7FC7378B24C345B300C2E3E9 /* AccountViewController.swift in Sources */,
 				7FB216B224AD45DD00056736 /* AccountsViewController.swift in Sources */,
 				7FB216CF24AD619300056736 /* AddNewAccountViewController.swift in Sources */,
 				7F340C5224BD483200427635 /* ColorTracker.swift in Sources */,

@@ -111,6 +111,10 @@ extension AccountsViewController: UITableViewDelegate {
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "viewAccount", sender: self)
+    }
+    
 }
 
 //MARK: - Add new account
@@ -122,10 +126,16 @@ extension AccountsViewController: newAccountAddedDelegate {
             let addNewAccountViewController = segue.destination as! AddNewAccountViewController
             addNewAccountViewController.delegate = self
             
+        }else if segue.identifier == "viewAccount" {
+            let accountViewController = segue.destination as! AccountViewController
+            
+            if let indexPath = accountsTableView.indexPathForSelectedRow, let account = accounts?[indexPath.row] {
+                accountViewController.account = account
+            }
+            
+            
         }
     }
-    
-    
     
     func newAccountAdded() {
         loadAccountData()
