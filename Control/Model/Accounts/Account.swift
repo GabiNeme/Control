@@ -45,20 +45,6 @@ class Account: Object {
     }
     
     
-    func save(){
-        
-        let realm = try! Realm()
-        
-        do{
-            try realm.write {
-                realm.add(self)
-            }
-        }catch{
-            print("Error saving new account: \(error)")
-        }
-        
-    }
-    
     func edit(changeTo account: Account){
         
         let realm = try! Realm()

@@ -31,10 +31,20 @@
                                         <rect key="frame" x="7" y="7" width="36" height="36"/>
                                         <color key="tintColor" name="BoxesBackgroundColor"/>
                                     </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="16k-sN-Gkj">
+                                        <rect key="frame" x="35" y="35.5" width="20" height="19"/>
+                                        <color key="tintColor" name="LabelColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="0Jq-Za-ljh"/>
+                                            <constraint firstAttribute="width" constant="20" id="MNm-lk-yKj"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="67p-ts-ymS"/>
+                                    <constraint firstAttribute="bottom" secondItem="16k-sN-Gkj" secondAttribute="bottom" constant="-5" id="8oT-o8-awj"/>
+                                    <constraint firstAttribute="trailing" secondItem="16k-sN-Gkj" secondAttribute="trailing" constant="-5" id="RBl-de-khj"/>
                                     <constraint firstItem="eLZ-XA-kDv" firstAttribute="leading" secondItem="CFp-v6-6N7" secondAttribute="leading" constant="7" id="S4y-V9-G21"/>
                                     <constraint firstItem="nMx-j9-5UE" firstAttribute="top" secondItem="CFp-v6-6N7" secondAttribute="top" id="UI9-tH-lm1"/>
                                     <constraint firstItem="eLZ-XA-kDv" firstAttribute="top" secondItem="CFp-v6-6N7" secondAttribute="top" constant="7" id="cAd-5Y-hPt"/>
@@ -94,6 +104,7 @@
                 <outlet property="accountFree" destination="wxn-5E-mRY" id="Etd-Vp-yjc"/>
                 <outlet property="accountName" destination="M3u-Nw-2Lp" id="Icc-eU-T7d"/>
                 <outlet property="accountSavings" destination="egL-lX-xBC" id="whD-eR-pLl"/>
+                <outlet property="addedToTotalIndicator" destination="16k-sN-Gkj" id="jnB-rG-VoO"/>
                 <outlet property="iconColorImageView" destination="nMx-j9-5UE" id="exV-cQ-IEx"/>
                 <outlet property="iconImageView" destination="eLZ-XA-kDv" id="TBi-gO-BRw"/>
             </connections>
@@ -101,6 +112,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="BoxesBackgroundColor">
             <color red="0.99607843137254903" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

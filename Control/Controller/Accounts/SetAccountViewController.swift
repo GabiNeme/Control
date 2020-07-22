@@ -55,14 +55,20 @@ class SetAccountViewController: UIViewController {
         let tapIconImage = UITapGestureRecognizer(target: self, action: #selector(iconImageTapped))
         iconImageStackView.addGestureRecognizer(tapIconImage)
         
+        let toolbar = KeyboardToolBar(width: view.frame.size.width, target: self, selector: #selector(doneButtonAction)).get()
+        accountNameTextField.inputAccessoryView = toolbar
+        currentBalanceTextField.inputAccessoryView = toolbar
+        
         loadAccount()
     }
     
 
     @IBAction func accountIconPressed(_ sender: UIButton) {
+        self.view.endEditing(true)
         performSegue(withIdentifier: "selectIconImage", sender: self)
     }
     @objc func iconImageTapped(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
         performSegue(withIdentifier: "selectIconImage", sender: self)
     }
     
@@ -78,6 +84,9 @@ class SetAccountViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
+    @objc func doneButtonAction(){
+        self.view.endEditing(true)
+    }
 }
 
 
@@ -89,8 +98,15 @@ extension SetAccountViewController{
 
         
         if accountNameTextField.text == nil || accountNameTextField.text == "" {
-            let alert = UIAlertController(title: "Preencher nome da conta", message: "A conta não pode ser criada sem um nome", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in })
+            
+            let alert = Alert(title: "Preencher nome da conta", message: "A conta não pode ser criada sem um nome").get()
+            present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        if accountNameInUse() {
+            let alert = Alert(title: "Nome da conta repetido", message: "Já existe uma conta com esse nome, favor escolher um novo nome.").get()
             present(alert, animated: true, completion: nil)
             
             return
@@ -124,6 +140,20 @@ extension SetAccountViewController{
         existingDelegate.accountDataChaged()
         dismiss(animated: true, completion: nil)
         
+    }
+    
+    
+    func accountNameInUse() -> Bool {
+        let currentName = accountNameTextField.text!
+        let nameExistsInDatabase = AccountsModel().accountNameUsed(accountName: currentName)
+        
+        //if account is being edited
+        if let existingAccount = editingAccount {
+            if currentName == existingAccount.name {
+                return false
+            }
+        }
+        return nameExistsInDatabase
     }
 }
 

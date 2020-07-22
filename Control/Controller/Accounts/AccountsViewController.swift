@@ -23,6 +23,7 @@ class AccountsViewController: UIViewController {
     let realm = try! Realm()
     
     var accounts: Results<Account>?
+    var existsAccountNotAddedToTotal: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +66,7 @@ class AccountsViewController: UIViewController {
 
 extension AccountsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return accounts?.count ?? 1
+        return accounts?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -75,6 +76,12 @@ extension AccountsViewController: UITableViewDataSource {
         if let account = accounts?[indexPath.row] {
             accountCell.iconImageView.image = IconImage(typeString: account.iconType, name: account.iconImage).getImage()
             accountCell.iconColorImageView.backgroundColor = UIColor(named: account.iconColor)
+            
+            if existsAccountNotAddedToTotal && account.addToTotal {
+                accountCell.addedToTotalIndicator.isHidden = false
+            }else{
+                accountCell.addedToTotalIndicator.isHidden = true
+            }
             
             accountCell.accountName.text = account.name
             accountCell.accountBalance.text = account.balance.toCurrency()
@@ -107,7 +114,7 @@ extension AccountsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if let account = accounts?[indexPath.row] {
-                AccountsModel().deleteAccount(account: account)
+                account.delete()
             }
         }
         loadAccountData()
@@ -151,6 +158,7 @@ extension AccountsViewController: setAccountDelegate {
 extension AccountsViewController {
     
     func loadAccountData(){
+        existsAccountNotAddedToTotal = AccountsModel().existsAccountNotAddedToTotal()
         
         accountsTableView.reloadData()
         computeTotalAccounts()

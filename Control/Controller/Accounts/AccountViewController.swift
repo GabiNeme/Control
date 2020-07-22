@@ -13,23 +13,19 @@ class AccountViewController: UIViewController {
    
     @IBOutlet weak var iconColorImageView: UIImageView!
     @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var addedToTotalIndicator: UIImageView!
     
     @IBOutlet weak var balanceLabel: UILabel!
     @IBOutlet weak var savingsLabel: UILabel!
     @IBOutlet weak var availableLabel: UILabel!
-    
-    
     
     @IBOutlet weak var transactionTableView: UITableView!
     @IBOutlet weak var transactionTableViewHeight: NSLayoutConstraint!
     
     let realm = try! Realm()
     
-    var account: Account?//{
-        //didSet{
-        //    loadAccount()
-        //}
-    //}
+    var account: Account?
+    var existsAccountNotAddedToTotal: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +44,18 @@ class AccountViewController: UIViewController {
     }
     
     func loadAccount(){
+        existsAccountNotAddedToTotal = AccountsModel().existsAccountNotAddedToTotal()
+        
         if let currentAccount = account {
             title = currentAccount.name
             iconImageView.image = IconImage(typeString: currentAccount.iconType, name: currentAccount.iconImage).getImage()
             iconColorImageView.backgroundColor = UIColor(named: currentAccount.iconColor)
+            
+            if existsAccountNotAddedToTotal && currentAccount.addToTotal {
+                addedToTotalIndicator.isHidden = false
+            }else{
+                addedToTotalIndicator.isHidden = true
+            }
             
             
             balanceLabel.text = currentAccount.balance.toCurrency()
@@ -84,6 +88,7 @@ extension AccountViewController: setAccountDelegate {
     
     func accountDataChaged() {
         loadAccount()
+        
     }
     
 }

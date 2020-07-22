@@ -21,6 +21,18 @@ struct AccountsModel {
         
     }
     
+    func existsAccountNotAddedToTotal() -> Bool {
+        let accountsNotAddedToTotal = realm.objects(Account.self).filter("addToTotal == false").count
+        
+        return !(accountsNotAddedToTotal == 0)
+    }
+    
+    func accountNameUsed(accountName: String) ->Bool {
+        let accountNames = realm.objects(Account.self).filter(NSPredicate(format:"name == %@", accountName)).count
+        
+        return !(accountNames == 0)
+    }
+    
     func swapAccounts(account1: Account, account2: Account) {
         
         let tempPosition = account1.listPosition
@@ -36,16 +48,7 @@ struct AccountsModel {
         }
     }
     
-    
-    func deleteAccount(account: Account) {
-        do{
-            try realm.write{
-                realm.delete(account)
-            }
-        }catch{
-            print("Error deleting account: \(error)")
-        }
-    }
+
     
 }
 
