@@ -70,4 +70,17 @@ class Account: Object {
         
     }
     
+    func invertAddToTotal(){
+        let realm = try! Realm()
+        
+        do{
+            try realm.write {
+                
+                self.addToTotal = !self.addToTotal
+            }
+        }catch{
+            print("Error saving new account: \(error)")
+        }
+    }
+    
 }
