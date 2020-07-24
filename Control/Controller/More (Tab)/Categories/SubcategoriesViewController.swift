@@ -10,10 +10,6 @@
 import UIKit
 import RealmSwift
 
-enum InteractionType {
-    case parentCategory, newSubcategory, editSubcategory
-}
-
 class SubcategoriesViewController: UIViewController {
     
     @IBOutlet weak var categoryNameLabel: UILabel!
@@ -23,10 +19,11 @@ class SubcategoriesViewController: UIViewController {
     @IBOutlet weak var subcategoriesTableView: UITableView!
     
     let realm = try! Realm()
-    var category: Category?
+    var category: Category!
     var subcategories: Results<Subcategory>?
     
-    var setCategoryType: InteractionType = .newSubcategory
+    var subcategoryModifyType: ObjectModifyType = .add
+    var subcategoryIndexToEdit: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,79 +53,49 @@ class SubcategoriesViewController: UIViewController {
     }
     
     @IBAction func editCategoryButtonPressed(_ sender: UIButton) {
-        setCategoryType = .parentCategory
-        performSegue(withIdentifier: "setSubcategory", sender: self)
+        performSegue(withIdentifier: "editCategory", sender: self)
     }
     
 
 }
 
+//MARK: - Prepare for segue, return from editing category
 
-
-extension SubcategoriesViewController: setCategoryDelegate {
+extension SubcategoriesViewController: setSubcategoryDelegate, setCategoryDelegate {
 
     @IBAction func addNewSubcategory(_ sender: UIBarButtonItem) {
-        setCategoryType = .newSubcategory
-        performSegue(withIdentifier: "setSubcategory", sender: self)
+        subcategoryModifyType = .add
+        performSegue(withIdentifier: "editSubcategory", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "setSubcategory" {
+        if segue.identifier == "editSubcategory" {
+            let destinationSegue = segue.destination as! SetSubcategoryViewController
+            destinationSegue.delegate = self
+            destinationSegue.parentCategory = category
+            
+            if subcategoryModifyType == .edit {
+                if let indexPathRow = subcategoryIndexToEdit, let subcategory = subcategories?[indexPathRow] {
+                    destinationSegue.editingSubcategory = subcategory
+                }
+            }
+        } else if segue.identifier == "editCategory" {
             let destinationSegue = segue.destination as! SetCategoryViewController
             destinationSegue.delegate = self
-            destinationSegue.UItitle = "Subcategoria"
-            
-            if setCategoryType == .parentCategory {
-                destinationSegue.categoryName = category!.name
-                destinationSegue.iconImage = IconImage(typeString: category!.iconType, name: category!.iconImage)
-                destinationSegue.iconColor = category!.iconColor
-                destinationSegue.UItitle = "Categoria"
-            }else if setCategoryType == .editSubcategory {
-                if let indexPath = subcategoriesTableView.indexPathForSelectedRow, let subcategory = subcategories?[indexPath.row]{
-                    destinationSegue.categoryName = subcategory.name
-                    destinationSegue.iconImage = IconImage(typeString: subcategory.iconType, name: subcategory.iconImage)
-                    destinationSegue.iconColor = subcategory.iconColor
-                }
-            }
+            destinationSegue.editingCategory = category
             
         }
-    }
-    
-    func categoryDataChaged(categoryName: String, iconImage: IconImage, iconColor: String) {
-        
-        if setCategoryType == .parentCategory{
-            if categoryName != category!.name && CategoryModel().categoryNameUsed(categoryName: categoryName){
-                let alert = Alert(title: "Nome da categoria repetido", message: "Já existe uma subcategoria com esse nome, não foi possível alterá-la.").get()
-                present(alert, animated: true, completion: nil)
-                return
-            } else {
-                category!.edit(name: categoryName, iconImage: iconImage, iconColor: iconColor)
-            }
-            loadCategory()
-        }else if setCategoryType == .newSubcategory {
-            if CategoryModel().subcategoryNameUsed(parentCategory: category!, subcategoryName: categoryName){
-                let alert = Alert(title: "Nome da subcategoria repetido", message: "Já existe uma subcategoria com esse nome, não foi possível criá-la.").get()
-                present(alert, animated: true, completion: nil)
-                return
-            }
-            
-            let subcategory = Subcategory(name: categoryName, iconImage: iconImage, iconColor: iconColor)
-            CategoryModel().addSubcategory(category: category!, subcategory: subcategory)
-        }else if setCategoryType == .editSubcategory {
-            if let indexPath = subcategoriesTableView.indexPathForSelectedRow, let subcategory = subcategories?[indexPath.row]{
-                if subcategory.name != categoryName && CategoryModel().subcategoryNameUsed(parentCategory: category!, subcategoryName: categoryName){
-                    let alert = Alert(title: "Nome da subcategoria repetido", message: "Já existe uma subcategoria com esse nome, não foi possível editá-la.").get()
-                    present(alert, animated: true, completion: nil)
-                    return
-                }
-                let newSubcategory = Subcategory(name: categoryName, iconImage: iconImage, iconColor: iconColor)
-                subcategory.edit(newSubcategory: newSubcategory)
-            }
-        }
-        
-        subcategoriesTableView.reloadData()
     }
 
+    func subcategoryDataChaged() {
+        subcategoriesTableView.reloadData()
+    }
+    
+    
+    func categoryDataChaged() {
+        loadCategory()
+        subcategoriesTableView.reloadData()
+    }
     
 }
 
@@ -146,10 +113,11 @@ extension SubcategoriesViewController: UITableViewDataSource {
 
         if let subcategory = subcategories?[indexPath.row] {
             categoryCell.iconImageView.image = IconImage(typeString: subcategory.iconType, name: subcategory.iconImage).getImage()
-            categoryCell.iconColorImageView.backgroundColor = UIColor(named: subcategory.iconColor)
-
+            categoryCell.iconColorImageView.backgroundColor = UIColor(named: category.iconColor)
 
             categoryCell.categoryNameLabel.text = subcategory.name
+            
+            categoryCell.editCategoryImageView.isHidden = false
         }
 
         
@@ -160,31 +128,89 @@ extension SubcategoriesViewController: UITableViewDataSource {
 //MARK: - UITableViewDelegate
 
 extension SubcategoriesViewController: UITableViewDelegate {
-    
-    
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        //if let account1 = categories?[sourceIndexPath.row], let account2 = categories?[destinationIndexPath.row] {
-        //    AccountsModel().swapAccounts(account1: account1, account2: account2)
-        //}
-
-        
-    }
-    
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            if let subcategory = subcategories?[indexPath.row] {
-                subcategory.delete()
-            }
-        }
-        subcategoriesTableView.reloadData()
-    }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        setCategoryType = .editSubcategory
-        performSegue(withIdentifier: "setSubcategory", sender: self)
+        editSubcategory(indexPathRow: indexPath.row)
+    }
+    
+}
+
+//MARK: - Swipe tableview methods
+
+extension SubcategoriesViewController {
+    
+   
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, complete) in
+            complete(true)
+            self.editSubcategory(indexPathRow: indexPath.row)
+
+        }
+        editAction.image = UIImage(systemName: "square.and.pencil")
+        editAction.backgroundColor = .orange
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, complete) in
+            complete(true)
+            self.deleteSubcategory(indexPathRow: indexPath.row)
+
+        }
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+    
+
+}
+
+//MARK: - Haptic/Force Touch menu
+
+extension SubcategoriesViewController {
+
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+
+        let editAction = UIAction(title: "Editar", image: UIImage(systemName: "square.and.pencil")) { _ in
+            self.editSubcategory(indexPathRow: indexPath.row)
+        }
+
+        let deleteAction = UIAction(title: "Apagar", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            self.deleteSubcategory(indexPathRow: indexPath.row)
+        }
+
+        let contextMenu = UIContextMenuConfiguration( identifier: nil, previewProvider: nil) { _ in
+
+            return UIMenu(title: "", image: nil, children: [editAction, deleteAction])
+        }
+
+        return contextMenu
+    }
+    
+    
+}
+
+
+extension SubcategoriesViewController {
+    //MARK: - Edit subcategory
+    func editSubcategory(indexPathRow: Int){
+        subcategoryModifyType = .edit
+        subcategoryIndexToEdit = indexPathRow
+        performSegue(withIdentifier: "editSubcategory", sender: self)
+        
+        if let indexPath = subcategoriesTableView.indexPathForSelectedRow {
+            subcategoriesTableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    
+    func deleteSubcategory(indexPathRow: Int){
+        if let subcategory = subcategories?[indexPathRow] {
+            subcategory.delete()
+        }
+        subcategoriesTableView.reloadData()
     }
     
 }

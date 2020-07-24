@@ -8,16 +8,17 @@
 
 
 import UIKit
+import RealmSwift
 
 protocol setCategoryDelegate {
-    func categoryDataChaged(categoryName: String, iconImage: IconImage, iconColor: String)
+    func categoryDataChaged()
 }
 
 class SetCategoryViewController: UIViewController {
 
     @IBOutlet weak var closeBarButton: UIButton!
+    
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var confirmCategoryButton: UIButton!
     
     @IBOutlet weak var categoryNameTextField: UITextField!
     
@@ -26,13 +27,12 @@ class SetCategoryViewController: UIViewController {
     @IBOutlet weak var iconColorImageView: UIImageView!
     @IBOutlet weak var iconImageView: UIImageView!
  
-        
-    var UItitle: String = "Categoria"
     
-    var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
-    var iconColor: String = "gray4"
+    private var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
+    private var iconColor: String = "gray4"
     
-    var categoryName: String = ""
+    var editingCategory: Category?
+    var categoryType: String?
     
     var delegate: setCategoryDelegate!
     
@@ -46,7 +46,6 @@ class SetCategoryViewController: UIViewController {
         closeBarButton.layer.cornerRadius = 2.5
         iconUIButton.layer.cornerRadius = 50
         iconColorImageView.layer.cornerRadius = 20
-        titleLabel.text = UItitle
         
         let toolbar = KeyboardToolBar(width: view.frame.size.width, target: self, selector: #selector(doneButtonAction)).get()
         categoryNameTextField.inputAccessoryView = toolbar
@@ -68,7 +67,7 @@ class SetCategoryViewController: UIViewController {
         performSegue(withIdentifier: "selectIconColor", sender: self)
     }
     
-    @IBAction func closeBottomButtonPressed(_ sender: UIButton) {
+    @IBAction func cancelButtonPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -86,8 +85,11 @@ class SetCategoryViewController: UIViewController {
 
 extension SetCategoryViewController{
     
-    @IBAction func confirmCategoryPressed(_ sender: UIButton) {
+    @IBAction func saveCategoryPressed(_ sender: UIButton) {
 
+        guard let existingDelegate = delegate else {
+            fatalError("Category delegate not set")
+        }
         
         if categoryNameTextField.text == nil || categoryNameTextField.text == "" {
             
@@ -97,27 +99,58 @@ extension SetCategoryViewController{
             return
         }
         
-       
+        let categoryName = categoryNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        guard let existingDelegate = delegate else {
-            fatalError("Category delegate not set")
+        //If editing category
+        if let category = editingCategory {
+            if categoryName != category.name && CategoryModel().categoryNameUsed(categoryName: categoryName){
+                showRepeatedNameAlert()
+                return
+            } else {
+                category.edit(name: categoryName, iconImage: iconImage, iconColor: iconColor)
+            }
+            
+        //if new category
+        } else{
+            if CategoryModel().categoryNameUsed(categoryName: categoryName){
+                showRepeatedNameAlert()
+                return
+            }else{
+                if let type = categoryType {
+                    let category = Category(type: type, name: categoryName, iconImage: iconImage, iconColor: iconColor)
+                    category.save()
+                }
+            }
         }
-        
+
         dismiss(animated: true, completion: nil)
-        existingDelegate.categoryDataChaged(categoryName: categoryNameTextField.text!, iconImage: iconImage, iconColor: iconColor)
+        existingDelegate.categoryDataChaged()
         
         
     }
     
     
+    func showRepeatedNameAlert(){
+        let alert = Alert(title: "Nome da categoria repetido", message: "Já existe uma categoria com esse nome. Por favor, escolha outro nome.").get()
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
 
 
-//MARK: - Editing existing account
+//MARK: - Editing existing category or subcategory
 
 extension SetCategoryViewController {
     func loadCategory(){
-        categoryNameTextField.text = categoryName
+        
+        if let category = editingCategory {
+            titleLabel.text = "Editar categoria"
+            
+            categoryNameTextField.text = category.name
+            iconImage = IconImage(typeString: category.iconType, name: category.iconImage)
+            iconColor = category.iconColor
+        }
+        
         updateIconColor()
         updateIconImage()
     }

@@ -9,13 +9,8 @@
 import UIKit
 import RealmSwift
 
-enum AccountModifyType {
-    case edit, add
-}
-
 class AccountsViewController: UIViewController {
 
-    
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBOutlet weak var accountsTableView: UITableView!
@@ -29,7 +24,7 @@ class AccountsViewController: UIViewController {
     private var accounts: Results<Account>?
     
     private var existsAccountNotAddedToTotal: Bool = false
-    private var accountModifyType: AccountModifyType = .add
+    private var accountModifyType: ObjectModifyType = .add
     private var accountIndexToEdit: Int?
     
     
@@ -259,9 +254,6 @@ extension AccountsViewController {
     }
     
 }
-
-
-
 
 
 //MARK: - Add new account

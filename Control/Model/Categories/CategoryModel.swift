@@ -35,6 +35,16 @@ struct CategoryModel {
         }
     }
     
+    func changeParentCategory(oldSubcategory: Subcategory, newSubcategory: Subcategory, to newCategory: Category){
+        do{
+            try realm.write{
+                realm.delete(oldSubcategory)
+                newCategory.subcategories.append(newSubcategory)
+            }
+        }catch{
+            print("Error adding subcategory: \(error)")
+        }
+    }
 
     
 }

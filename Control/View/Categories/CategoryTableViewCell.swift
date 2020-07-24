@@ -14,12 +14,14 @@ class CategoryTableViewCell: UITableViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var categoryNameLabel: UILabel!
     
+    @IBOutlet weak var editCategoryImageView: UIImageView!
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         iconColorImageView.layer.cornerRadius = 20
+        editCategoryImageView.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -15,7 +15,8 @@ protocol setAccountDelegate {
 class SetAccountViewController: UIViewController {
 
     @IBOutlet weak var closeBarButton: UIButton!
-    @IBOutlet weak var addAccountButton: UIButton!
+    
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     @IBOutlet weak var accountNameTextField: UITextField!
     @IBOutlet weak var currentBalanceTextField: UITextField!
@@ -164,6 +165,8 @@ extension SetAccountViewController {
     func loadAccount(){
         
         if let account = editingAccount {
+            descriptionLabel.text = "Editar conta"
+            
             iconImage = IconImage(typeString: account.iconType, name: account.iconImage)
             iconColor = account.iconColor
             
