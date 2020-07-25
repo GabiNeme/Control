@@ -27,7 +27,7 @@ class CategoriesViewController: UIViewController {
         categoriesTableView.dataSource = self
         categoriesTableView.delegate = self
         
-        categoriesTableView.register(UINib(nibName: "CategoryTableViewCell", bundle: nil), forCellReuseIdentifier: "categoryCell")
+        categoriesTableView.register(CategoryTableViewCell.nib(), forCellReuseIdentifier: CategoryTableViewCell.identifier)
         categoriesTableView.rowHeight = 50
         
         categories = realm.objects(Category.self).filter(NSPredicate(format: "type = %@", type)).sorted(byKeyPath: "name")
@@ -66,7 +66,7 @@ extension CategoriesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let categoryCell = categoriesTableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCell
+        let categoryCell = categoriesTableView.dequeueReusableCell(withIdentifier: CategoryTableViewCell.identifier, for: indexPath) as! CategoryTableViewCell
         categoryCell.accessoryType = .disclosureIndicator
 
         if let category = categories?[indexPath.row] {
@@ -87,9 +87,7 @@ extension CategoriesViewController: UITableViewDelegate {
         
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if let category = categories?[indexPath.row] {
-                category.delete()
-            }
+            deleteCategory(indexPathRow: indexPath.row)
         }
         categoriesTableView.reloadData()
     }
@@ -108,26 +106,16 @@ extension CategoriesViewController {
    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, complete) in
-            complete(true)
-            self.editCategory(indexPathRow: indexPath.row)
-
-        }
-        editAction.image = UIImage(systemName: "square.and.pencil")
-        editAction.backgroundColor = .orange
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, complete) in
-            complete(true)
-            if let category = self.categories?[indexPath.row] {
-                category.delete()
-            }
-
-        }
-        deleteAction.image = UIImage(systemName: "trash")
-        
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-        configuration.performsFirstActionWithFullSwipe = false
-        return configuration
+        return TrailingSwipeForEditAndDelete().get(
+            editHandler: { (_, _, complete) in
+                complete(true)
+                self.editCategory(indexPathRow: indexPath.row)
+            },
+            deleteHandler:  { (_, _, complete) in
+                complete(true)
+                self.deleteCategory(indexPathRow: indexPath.row)
+            })
+    
     }
     
 
@@ -139,23 +127,15 @@ extension CategoriesViewController {
 
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-
-        let editAction = UIAction(title: "Editar", image: UIImage(systemName: "square.and.pencil")) { _ in
-            self.editCategory(indexPathRow: indexPath.row)
-        }
-
-        let deleteAction = UIAction(title: "Apagar", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-            self.deleteCategory(indexPathRow: indexPath.row)
-        }
-
-        let contextMenu = UIContextMenuConfiguration( identifier: nil, previewProvider: nil) { _ in
-
-            return UIMenu(title: "", image: nil, children: [editAction, deleteAction])
-        }
-
-        return contextMenu
+        
+        return HepticTouchForEditAndDelete().get(
+            editHandler: { (_) in
+                self.editCategory(indexPathRow: indexPath.row)
+            }, deleteHandler:  { (_) in
+                self.deleteCategory(indexPathRow: indexPath.row)
+            })
+        
     }
-    
     
 }
 
@@ -166,6 +146,7 @@ extension CategoriesViewController: setCategoryDelegate {
 
 
     @IBAction func addNewCategory(_ sender: UIBarButtonItem) {
+        categoryModifyType = .add
         performSegue(withIdentifier: "editCategory", sender: self)
     }
     
@@ -212,8 +193,7 @@ extension CategoriesViewController {
         if let category = categories?[indexPathRow] {
             category.delete()
         }
-        
-        categoriesTableView.reloadData()
+        categoriesTableView.deleteRows(at: [IndexPath(row: indexPathRow, section: 0)], with: .automatic)
     }
 
     

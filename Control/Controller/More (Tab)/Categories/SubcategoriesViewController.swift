@@ -129,7 +129,6 @@ extension SubcategoriesViewController: UITableViewDataSource {
 
 extension SubcategoriesViewController: UITableViewDelegate {
         
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         editSubcategory(indexPathRow: indexPath.row)
     }
@@ -143,24 +142,16 @@ extension SubcategoriesViewController {
    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, complete) in
-            complete(true)
-            self.editSubcategory(indexPathRow: indexPath.row)
-
-        }
-        editAction.image = UIImage(systemName: "square.and.pencil")
-        editAction.backgroundColor = .orange
+        return TrailingSwipeForEditAndDelete().get(
+            editHandler: { (_, _, complete) in
+                complete(true)
+                self.editSubcategory(indexPathRow: indexPath.row)
+            },
+            deleteHandler:  { (_, _, complete) in
+                complete(true)
+                self.deleteSubcategory(indexPathRow: indexPath.row)
+            })
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, complete) in
-            complete(true)
-            self.deleteSubcategory(indexPathRow: indexPath.row)
-
-        }
-        deleteAction.image = UIImage(systemName: "trash")
-        
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-        configuration.performsFirstActionWithFullSwipe = false
-        return configuration
     }
     
 
@@ -173,20 +164,13 @@ extension SubcategoriesViewController {
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
 
-        let editAction = UIAction(title: "Editar", image: UIImage(systemName: "square.and.pencil")) { _ in
-            self.editSubcategory(indexPathRow: indexPath.row)
-        }
-
-        let deleteAction = UIAction(title: "Apagar", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-            self.deleteSubcategory(indexPathRow: indexPath.row)
-        }
-
-        let contextMenu = UIContextMenuConfiguration( identifier: nil, previewProvider: nil) { _ in
-
-            return UIMenu(title: "", image: nil, children: [editAction, deleteAction])
-        }
-
-        return contextMenu
+        return HepticTouchForEditAndDelete().get(
+            editHandler: { (_) in
+                self.editSubcategory(indexPathRow: indexPath.row)
+            }, deleteHandler:  { (_) in
+                self.deleteSubcategory(indexPathRow: indexPath.row)
+            })
+        
     }
     
     
@@ -210,7 +194,7 @@ extension SubcategoriesViewController {
         if let subcategory = subcategories?[indexPathRow] {
             subcategory.delete()
         }
-        subcategoriesTableView.reloadData()
+        subcategoriesTableView.deleteRows(at: [IndexPath(row: indexPathRow, section: 0)], with: .automatic)
     }
     
 }

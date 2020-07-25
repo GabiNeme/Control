@@ -20,6 +20,7 @@ class AccountTableViewCell: UITableViewCell {
     @IBOutlet weak var accountSavings: UILabel!
     @IBOutlet weak var accountFree: UILabel!
 
+    static let identifier = "accountCell"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,6 +30,10 @@ class AccountTableViewCell: UITableViewCell {
         // Initialization code
     }
 
+    static func nib() -> UINib {
+        return UINib(nibName: "AccountTableViewCell", bundle: nil)
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

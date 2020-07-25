@@ -161,7 +161,7 @@ extension SetSubcategoryViewController{
 }
 
 
-//MARK: - Editing existing category or subcategory
+//MARK: - Editing existing subcategory
 
 extension SetSubcategoryViewController {
     func loadCategory(){

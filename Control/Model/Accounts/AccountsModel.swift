@@ -20,13 +20,7 @@ struct AccountsModel {
         return lastPosition + 1
         
     }
-    
-    func existsAccountNotAddedToTotal() -> Bool {
-        let accountsNotAddedToTotal = realm.objects(Account.self).filter("addToTotal == false").count
         
-        return !(accountsNotAddedToTotal == 0)
-    }
-    
     func accountNameUsed(accountName: String) ->Bool {
         let accountNames = realm.objects(Account.self).filter(NSPredicate(format:"name == %@", accountName)).count
         

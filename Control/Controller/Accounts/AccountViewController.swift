@@ -43,9 +43,7 @@ class AccountViewController: UIViewController {
         super.updateViewConstraints()
     }
     
-    func loadAccount(){
-        existsAccountNotAddedToTotal = AccountsModel().existsAccountNotAddedToTotal()
-        
+    func loadAccount(){        
         if let currentAccount = account {
             title = currentAccount.name
             iconImageView.image = IconImage(typeString: currentAccount.iconType, name: currentAccount.iconImage).getImage()

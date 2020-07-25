@@ -50,6 +50,8 @@
 		7FB216CC24AD4CB100056736 /* AccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB216CA24AD4CB100056736 /* AccountTableViewCell.xib */; };
 		7FB216CF24AD619300056736 /* SetAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216CE24AD619300056736 /* SetAccountViewController.swift */; };
 		7FB216D124AD696900056736 /* EmptyRequiredField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216D024AD696900056736 /* EmptyRequiredField.swift */; };
+		7FB3D28F24CCBEAC0000D736 /* TrailingSwipeForEditAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB3D28E24CCBEAC0000D736 /* TrailingSwipeForEditAndDelete.swift */; };
+		7FB3D29124CCCB750000D736 /* HepticTouchForEditAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB3D29024CCCB750000D736 /* HepticTouchForEditAndDelete.swift */; };
 		7FC7378B24C345B300C2E3E9 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */; };
 		7FDB355324C643C70031CD94 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDB355224C643C70031CD94 /* Alert.swift */; };
 		7FDB355524C645530031CD94 /* KeyboardToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDB355424C645530031CD94 /* KeyboardToolBar.swift */; };
@@ -105,6 +107,8 @@
 		7FB216CA24AD4CB100056736 /* AccountTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountTableViewCell.xib; sourceTree = "<group>"; };
 		7FB216CE24AD619300056736 /* SetAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAccountViewController.swift; sourceTree = "<group>"; };
 		7FB216D024AD696900056736 /* EmptyRequiredField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRequiredField.swift; sourceTree = "<group>"; };
+		7FB3D28E24CCBEAC0000D736 /* TrailingSwipeForEditAndDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingSwipeForEditAndDelete.swift; sourceTree = "<group>"; };
+		7FB3D29024CCCB750000D736 /* HepticTouchForEditAndDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HepticTouchForEditAndDelete.swift; sourceTree = "<group>"; };
 		7FC7378A24C345B300C2E3E9 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		7FDB355224C643C70031CD94 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		7FDB355424C645530031CD94 /* KeyboardToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolBar.swift; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 				7F2ED4CB24B224B900FD541C /* CurrencyTextField.swift */,
 				7FDB355224C643C70031CD94 /* Alert.swift */,
 				7FDB355424C645530031CD94 /* KeyboardToolBar.swift */,
+				7FB3D28E24CCBEAC0000D736 /* TrailingSwipeForEditAndDelete.swift */,
+				7FB3D29024CCCB750000D736 /* HepticTouchForEditAndDelete.swift */,
 			);
 			path = NewUIElements;
 			sourceTree = "<group>";
@@ -306,10 +312,10 @@
 		7FB216C324AD4B0900056736 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7F5CF35C24C89109000EC0D4 /* Savings */,
-				7F6FC69F24BBA88B00A0685A /* Icons */,
 				7FB216C424AD4B1100056736 /* Accounts */,
 				7F64F20224C667740099DA4F /* Categories */,
+				7F6FC69F24BBA88B00A0685A /* Icons */,
+				7F5CF35C24C89109000EC0D4 /* Savings */,
 				7FEAC13924CA038600095779 /* Object */,
 			);
 			path = Model;
@@ -327,10 +333,10 @@
 		7FB216C724AD4C5900056736 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7F5CF36124C8982A000EC0D4 /* Savings */,
+				7FB216CD24AD4CB900056736 /* Accounts */,
 				7F9288D124C664EA003C5B30 /* Categories */,
 				7F62B3A024BB9EC500D5998D /* IconImage */,
-				7FB216CD24AD4CB900056736 /* Accounts */,
+				7F5CF36124C8982A000EC0D4 /* Savings */,
 				7FB216B524AD45DD00056736 /* Main.storyboard */,
 				7FB216BA24AD45E500056736 /* LaunchScreen.storyboard */,
 			);
@@ -340,11 +346,11 @@
 		7FB216C824AD4C6900056736 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7F9B239D24C657A90034AB60 /* More (Tab) */,
+				7FAA1F4024AD76F600D00F5F /* Accounts */,
 				7F993BD224BB9ABC00ED479E /* Icons */,
+				7F9B239D24C657A90034AB60 /* More (Tab) */,
 				7F2ED4CD24B22A5500FD541C /* NativeExtensions */,
 				7F2ED4CA24B2248E00FD541C /* NewUIElements */,
-				7FAA1F4024AD76F600D00F5F /* Accounts */,
 				7FB216B324AD45DD00056736 /* SecondViewController.swift */,
 				7FB216D024AD696900056736 /* EmptyRequiredField.swift */,
 			);
@@ -490,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F3B6FC324C678A300E19842 /* SetCategoryViewController.swift in Sources */,
+				7FB3D29124CCCB750000D736 /* HepticTouchForEditAndDelete.swift in Sources */,
 				7F2ED4D124B22A7B00FD541C /* Formatter.swift in Sources */,
 				7FB216B424AD45DD00056736 /* SecondViewController.swift in Sources */,
 				7FB216C624AD4B5400056736 /* Account.swift in Sources */,
@@ -519,6 +526,7 @@
 				7F46A29F24C68F6B00E754AA /* Subcategory.swift in Sources */,
 				7FB216CB24AD4CB100056736 /* AccountTableViewCell.swift in Sources */,
 				7F2ED4CC24B224B900FD541C /* CurrencyTextField.swift in Sources */,
+				7FB3D28F24CCBEAC0000D736 /* TrailingSwipeForEditAndDelete.swift in Sources */,
 				7F5CF35E24C8916A000EC0D4 /* Saving.swift in Sources */,
 				7F62B39E24BB9EAF00D5998D /* IconImageCollectionViewCell.swift in Sources */,
 				7FB216AE24AD45DD00056736 /* AppDelegate.swift in Sources */,

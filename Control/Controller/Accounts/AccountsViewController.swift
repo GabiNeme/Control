@@ -23,7 +23,6 @@ class AccountsViewController: UIViewController {
     
     private var accounts: Results<Account>?
     
-    private var existsAccountNotAddedToTotal: Bool = false
     private var accountModifyType: ObjectModifyType = .add
     private var accountIndexToEdit: Int?
     
@@ -34,7 +33,7 @@ class AccountsViewController: UIViewController {
         accountsTableView.dataSource = self
         accountsTableView.delegate = self
         
-        accountsTableView.register(UINib(nibName: "AccountTableViewCell", bundle: nil), forCellReuseIdentifier: "accountCell")
+        accountsTableView.register(AccountTableViewCell.nib(), forCellReuseIdentifier: AccountTableViewCell.identifier)
         accountsTableView.rowHeight = 70
         
         accounts = realm.objects(Account.self).sorted(byKeyPath: "listPosition")
@@ -65,14 +64,14 @@ extension AccountsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let accountCell = tableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! AccountTableViewCell
+        let accountCell = tableView.dequeueReusableCell(withIdentifier: AccountTableViewCell.identifier, for: indexPath) as! AccountTableViewCell
         
         
         if let account = accounts?[indexPath.row] {
             accountCell.iconImageView.image = IconImage(typeString: account.iconType, name: account.iconImage).getImage()
             accountCell.iconColorImageView.backgroundColor = UIColor(named: account.iconColor)
             
-            if existsAccountNotAddedToTotal && account.addToTotal {
+            if account.addToTotal {
                 accountCell.addedToTotalIndicator.isHidden = false
             }else{
                 accountCell.addedToTotalIndicator.isHidden = true
@@ -123,25 +122,16 @@ extension AccountsViewController {
    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, complete) in
-            complete(true)
-            self.accountIndexToEdit = indexPath.row
-            self.editAccount()
+        return TrailingSwipeForEditAndDelete().get(
+            editHandler: { (_, _, complete) in
+                complete(true)
+                self.editAccount(indexPathRow: indexPath.row)
+            },
+            deleteHandler:  { (_, _, complete) in
+                complete(true)
+                self.deleteAccount(indexPathRow: indexPath.row)
+            })
 
-        }
-        editAction.image = UIImage(systemName: "square.and.pencil")
-        editAction.backgroundColor = .orange
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, complete) in
-            complete(true)
-            self.deleteAccount(indexPathRow: indexPath.row)
-
-        }
-        deleteAction.image = UIImage(systemName: "trash")
-        
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-        configuration.performsFirstActionWithFullSwipe = false
-        return configuration
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -157,9 +147,12 @@ extension AccountsViewController {
         
         let addToTotalAction = UIContextualAction(style: .normal, title: actionTitle) { (action, view, complete) in
             complete(true)
-            if let account = self.accounts?[indexPath.row]{
+            if let account = self.accounts?[indexPath.row],
+                let cell = tableView.cellForRow(at: indexPath) as? AccountTableViewCell{
+                
                 account.invertAddToTotal()
-                self.loadAccountData()
+                cell.addedToTotalIndicator.isHidden = !cell.addedToTotalIndicator.isHidden
+                self.computeTotalAccounts()
             }
 
         }
@@ -180,36 +173,25 @@ extension AccountsViewController {
             self.reorderAndEditAccounts()
         }
         
-        
         var actionTitle: String = ""
         guard let account = accounts?[indexPath.row] else {
             fatalError("Account not set for haptic touch")
         }
-        if account.addToTotal {
-            actionTitle = "Remover do total"
-        } else {
-            actionTitle = "Adicionar ao total"
-        }
+        actionTitle = account.addToTotal ? "Remover do total" : "Adicionar ao total"
         let editIncludeInTotalAction = UIAction(title: actionTitle, image: UIImage(systemName: "checkmark.circle.fill")) { _ in
             account.invertAddToTotal()
             self.loadAccountData()
         }
         
-        let editAction = UIAction(title: "Editar", image: UIImage(systemName: "square.and.pencil")) { _ in
-            self.accountIndexToEdit = indexPath.row
-            self.editAccount()
-        }
+        return HepticTouchForEditAndDelete().get(
+            editHandler: { (_) in
+                self.editAccount(indexPathRow: indexPath.row)
+            },
+            deleteHandler:  { (_) in
+                self.deleteAccount(indexPathRow: indexPath.row)
+            },
+            extraActions: [reorderAction, editIncludeInTotalAction])
         
-        let deleteAction = UIAction(title: "Apagar", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-            self.deleteAccount(indexPathRow: indexPath.row)
-        }
-        
-        let contextMenu = UIContextMenuConfiguration( identifier: nil, previewProvider: nil) { _ in
-
-            return UIMenu(title: "", image: nil, children: [reorderAction, editIncludeInTotalAction, editAction, deleteAction])
-        }
-        
-        return contextMenu
     }
     
     
@@ -223,9 +205,10 @@ extension AccountsViewController {
         let alert = UIAlertController(title: "Tem certeza que deseja apagar essa conta?", message: "Ao apagá-la, todas as transações serão mantidas, mas o saldo total será alterado.", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Apagar", style: .destructive, handler: { (action) in
-            if let account = self.accounts?[indexPathRow] {
+            if let account = self.accounts?[indexPathRow]{
                 account.delete()
-                self.loadAccountData()
+                self.accountsTableView.deleteRows(at: [IndexPath(row: indexPathRow, section: 0)], with: .automatic)
+                self.computeTotalAccounts()
             }
         }))
         alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
@@ -236,7 +219,8 @@ extension AccountsViewController {
     
     //MARK: - Edit account
     
-    func editAccount() {
+    func editAccount(indexPathRow: Int) {
+        self.accountIndexToEdit = indexPathRow
         accountModifyType = .edit
         performSegue(withIdentifier: "addNewAccount", sender: self)
     }
@@ -294,7 +278,6 @@ extension AccountsViewController: setAccountDelegate {
 extension AccountsViewController {
     
     func loadAccountData(){
-        existsAccountNotAddedToTotal = AccountsModel().existsAccountNotAddedToTotal()
         
         accountsTableView.reloadData()
         computeTotalAccounts()
@@ -302,6 +285,7 @@ extension AccountsViewController {
     
     
     func computeTotalAccounts(){
+        
         var total = 0.00
         var savings = 0.00
         var available = 0.00

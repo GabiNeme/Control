@@ -16,13 +16,13 @@ class SavingTableViewCell: UITableViewCell {
     
     @IBOutlet weak var savingNameLabel: UILabel!
     
-    
     @IBOutlet weak var goalTitleLabel: UILabel!
     @IBOutlet weak var savingGoalLabel: UILabel!
     @IBOutlet weak var savedLabel: UILabel!
     
     @IBOutlet weak var savedProgressView: UIProgressView!
     
+    static let identifier = "savingCell"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,6 +30,10 @@ class SavingTableViewCell: UITableViewCell {
         iconColorImageView.layer.cornerRadius = 25
     }
 
+    static func nib() -> UINib {
+        return UINib(nibName: "SavingTableViewCell", bundle: nil)
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

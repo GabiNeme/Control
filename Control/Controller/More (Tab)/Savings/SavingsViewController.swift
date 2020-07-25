@@ -26,7 +26,7 @@ class SavingsViewController: UIViewController {
         savingsTableView.dataSource = self
         savingsTableView.delegate = self
         
-        savingsTableView.register(UINib(nibName: "SavingTableViewCell", bundle: nil), forCellReuseIdentifier: "savingCell")
+        savingsTableView.register(SavingTableViewCell.nib(), forCellReuseIdentifier: SavingTableViewCell.identifier)
         savingsTableView.rowHeight = 70
         
         
@@ -53,7 +53,7 @@ extension SavingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let savingCell = savingsTableView.dequeueReusableCell(withIdentifier: "savingCell", for: indexPath) as! SavingTableViewCell
+        let savingCell = savingsTableView.dequeueReusableCell(withIdentifier: SavingTableViewCell.identifier, for: indexPath) as! SavingTableViewCell
 
         if let saving = savings?[indexPath.row] {
             savingCell.iconImageView.image = IconImage(typeString: saving.iconType, name: saving.iconImage).getImage()
