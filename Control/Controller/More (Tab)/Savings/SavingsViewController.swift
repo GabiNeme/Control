@@ -39,7 +39,7 @@ class SavingsViewController: UIViewController {
 
     
     @IBAction func addSavingPressed(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "addNewSaving", sender: self)
+        performSegue(withIdentifier: "setSaving", sender: self)
     }
         
 }

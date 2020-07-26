@@ -10,13 +10,15 @@ import UIKit
 
 class IconImageCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var selectedIndicator: UIImageView!
     @IBOutlet weak var iconImageView: UIImageView!
     
     static let identifier = "iconImageCell"
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectedIndicator.layer.cornerRadius = 20
+        selectedIndicator.isHidden = true
     }
 
     static func nib() -> UINib {
