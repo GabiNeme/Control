@@ -23,7 +23,6 @@ class SetSubcategoryViewController: UIViewController {
 
     @IBOutlet weak var iconUIButton: UIButton!
     @IBOutlet weak var topIconImageView: UIImageView!
-    @IBOutlet weak var iconImageView: UIImageView!
 
     @IBOutlet weak var parentCategoriesCollectionView: UICollectionView!
     
@@ -41,8 +40,9 @@ class SetSubcategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
-        //view.addGestureRecognizer(tap)
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false 
+        view.addGestureRecognizer(tap)
 
         closeBarButton.layer.cornerRadius = 2.5
         iconUIButton.layer.cornerRadius = 50
@@ -76,11 +76,7 @@ class SetSubcategoryViewController: UIViewController {
 
     @IBAction func categoryIconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconImage", sender: self)
-    }
-    @IBAction func iconImageTapped(_ sender: UIButton) {
-        self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconImage", sender: self)
+        performSegue(withIdentifier: "setIcon", sender: self)
     }
 
 
@@ -174,7 +170,7 @@ extension SetSubcategoryViewController {
         }
 
         iconUIButton.backgroundColor = UIColor(named: parentCategory.iconColor)
-        updateIconImage()
+        updateIcon()
     }
 }
 
@@ -182,24 +178,27 @@ extension SetSubcategoryViewController {
 
 extension SetSubcategoryViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "selectIconImage" {
-            let destinationSegue = segue.destination as! IconImageViewController
+        if segue.identifier == "setIcon" {
+            let destinationSegue = segue.destination as! IconViewController
             destinationSegue.delegate = self
+            destinationSegue.selectedImage = iconImage
+            if let index = selectedCategoryIndex, let selectedCategory = categories?[index] {
+                destinationSegue.selectedColor = selectedCategory.iconColor
+            }
+            destinationSegue.onlyImage = true
         }
     }
 }
 
 
-extension SetSubcategoryViewController : IconImageSelectorDelegate {
-    func iconImageSelected(image: IconImage) {
+extension SetSubcategoryViewController : IconSelectorDelegate {
+    func iconSelected(color: String, image: IconImage) {
         iconImage = image
-        updateIconImage()
-
+        updateIcon()
     }
-
-    func updateIconImage(){
+    
+    func updateIcon(){
         topIconImageView.image = iconImage.getImage()
-        iconImageView.image = iconImage.getImage()
     }
 }
 

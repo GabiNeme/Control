@@ -24,9 +24,6 @@ class SetCategoryViewController: UIViewController {
     
     @IBOutlet weak var iconUIButton: UIButton!
     @IBOutlet weak var topIconImageView: UIImageView!
-    @IBOutlet weak var iconColorImageView: UIImageView!
-    @IBOutlet weak var iconImageView: UIImageView!
- 
     
     private var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
     private var iconColor: String = "gray4"
@@ -45,7 +42,6 @@ class SetCategoryViewController: UIViewController {
         
         closeBarButton.layer.cornerRadius = 2.5
         iconUIButton.layer.cornerRadius = 50
-        iconColorImageView.layer.cornerRadius = 20
         
         let toolbar = KeyboardToolBar(width: view.frame.size.width, target: self, selector: #selector(doneButtonAction)).get()
         categoryNameTextField.inputAccessoryView = toolbar
@@ -56,15 +52,7 @@ class SetCategoryViewController: UIViewController {
 
     @IBAction func categoryIconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconImage", sender: self)
-    }
-    @IBAction func iconImageTapped(_ sender: UIButton) {
-        self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconImage", sender: self)
-    }
-    @IBAction func iconColorTapped(_ sender: UIButton) {
-        self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconColor", sender: self)
+        performSegue(withIdentifier: "setIcon", sender: self)
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
@@ -151,8 +139,7 @@ extension SetCategoryViewController {
             iconColor = category.iconColor
         }
         
-        updateIconColor()
-        updateIconImage()
+        updateIcon()
     }
 }
 
@@ -163,41 +150,26 @@ extension SetCategoryViewController {
 
 extension SetCategoryViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "selectIconImage" {
-            let destinationSegue = segue.destination as! IconImageViewController
+        if segue.identifier == "setIcon" {
+            let destinationSegue = segue.destination as! IconViewController
             destinationSegue.delegate = self
-        }else if segue.identifier == "selectIconColor" {
-            let destinationSegue = segue.destination as! IconColorViewController
-            destinationSegue.delegate = self
-            
+            destinationSegue.selectedImage = iconImage
+            destinationSegue.selectedColor = iconColor
         }
     }
 }
 
 
-extension SetCategoryViewController : IconImageSelectorDelegate {
-    func iconImageSelected(image: IconImage) {
-        iconImage = image
-        updateIconImage()
-        
-    }
-    
-    func updateIconImage(){
-        topIconImageView.image = iconImage.getImage()
-        iconImageView.image = iconImage.getImage()
-    }
-}
-
-extension SetCategoryViewController: IconColorSelectorDelegate {
-    func iconColorSelected(color: String) {
+extension SetCategoryViewController : IconSelectorDelegate {
+    func iconSelected(color: String, image: IconImage) {
         iconColor = color
-        updateIconColor()
+        iconImage = image
+        updateIcon()
     }
     
-    func updateIconColor(){
+    func updateIcon(){
         iconUIButton.backgroundColor = UIColor(named: iconColor)
-        iconColorImageView.backgroundColor = UIColor(named: iconColor)
+        topIconImageView.image = iconImage.getImage()
     }
-    
 }
 

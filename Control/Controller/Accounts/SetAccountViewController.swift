@@ -24,12 +24,6 @@ class SetAccountViewController: UIViewController {
     
     @IBOutlet weak var iconUIButton: UIButton!
     @IBOutlet weak var topIconImageView: UIImageView!
-    @IBOutlet weak var iconColorImageView: UIImageView!
-    @IBOutlet weak var iconImageView: UIImageView!
-    
-    
-    @IBOutlet weak var iconColorStackView: UIStackView!
-    @IBOutlet weak var iconImageStackView: UIStackView!
         
     //Account Elements
     var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
@@ -48,13 +42,6 @@ class SetAccountViewController: UIViewController {
         
         closeBarButton.layer.cornerRadius = 2.5
         iconUIButton.layer.cornerRadius = 50
-        iconColorImageView.layer.cornerRadius = 20
-        
-        let tapIconColor = UITapGestureRecognizer(target: self, action: #selector(iconColorTapped))
-        iconColorStackView.addGestureRecognizer(tapIconColor)
-        
-        let tapIconImage = UITapGestureRecognizer(target: self, action: #selector(iconImageTapped))
-        iconImageStackView.addGestureRecognizer(tapIconImage)
         
         let toolbar = KeyboardToolBar(width: view.frame.size.width, target: self, selector: #selector(doneButtonAction)).get()
         accountNameTextField.inputAccessoryView = toolbar
@@ -66,15 +53,7 @@ class SetAccountViewController: UIViewController {
 
     @IBAction func accountIconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconImage", sender: self)
-    }
-    @objc func iconImageTapped(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-        performSegue(withIdentifier: "selectIconImage", sender: self)
-    }
-    
-    @objc func iconColorTapped(sender: UITapGestureRecognizer) {
-        performSegue(withIdentifier: "selectIconColor", sender: self)
+        performSegue(withIdentifier: "setIcon", sender: self)
     }
     
     @IBAction func closeBottomButtonPressed(_ sender: UIButton) {
@@ -175,52 +154,36 @@ extension SetAccountViewController {
             addToTotalSwitch.isOn = account.addToTotal
         }
         
-        updateIconColor()
-        updateIconImage()
+        updateIcon()
     }
 }
 
 
-    
+
 
 //MARK: - Icon color and image
 
 extension SetAccountViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "selectIconImage" {
-            let destinationSegue = segue.destination as! IconImageViewController
+        if segue.identifier == "setIcon" {
+            let destinationSegue = segue.destination as! IconViewController
             destinationSegue.delegate = self
-        }else if segue.identifier == "selectIconColor" {
-            let destinationSegue = segue.destination as! IconColorViewController
-            destinationSegue.delegate = self
-            
+            destinationSegue.selectedImage = iconImage
+            destinationSegue.selectedColor = iconColor
         }
     }
 }
 
 
-extension SetAccountViewController : IconImageSelectorDelegate {
-    func iconImageSelected(image: IconImage) {
-        iconImage = image
-        updateIconImage()
-        
-    }
-    
-    func updateIconImage(){
-        topIconImageView.image = iconImage.getImage()
-        iconImageView.image = iconImage.getImage()
-    }
-}
-
-extension SetAccountViewController: IconColorSelectorDelegate {
-    func iconColorSelected(color: String) {
+extension SetAccountViewController : IconSelectorDelegate {
+    func iconSelected(color: String, image: IconImage) {
         iconColor = color
-        updateIconColor()
+        iconImage = image
+        updateIcon()
     }
     
-    func updateIconColor(){
+    func updateIcon(){
         iconUIButton.backgroundColor = UIColor(named: iconColor)
-        iconColorImageView.backgroundColor = UIColor(named: iconColor)
+        topIconImageView.image = iconImage.getImage()
     }
-    
 }

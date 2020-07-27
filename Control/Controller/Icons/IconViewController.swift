@@ -23,6 +23,8 @@ class IconViewController: UIViewController {
     @IBOutlet weak var backgroundColorImageView: UIImageView!
     @IBOutlet weak var imageImageView: UIImageView!
        
+    @IBOutlet weak var segmentControlView: UIView!
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var imageView: UIView!
     
@@ -35,6 +37,8 @@ class IconViewController: UIViewController {
     var selectedColor: String!
     var selectedImage: IconImage!
     
+    var onlyImage: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,6 +47,15 @@ class IconViewController: UIViewController {
         
         backgroundColorImageView.layer.cornerRadius = 50
         closerBarButton.layer.cornerRadius = 2.5
+        
+        selectedColor = "gray4"
+        selectedImage = IconImage(type: .SFSymbol, name: "questionmark")
+        
+        if onlyImage {
+            segmentControlView.isHidden = true
+            separatorView.isHidden = true
+            colorView.isHidden = true
+        }
         
         updateIcon()
     }
@@ -139,6 +152,7 @@ extension IconViewController: UICollectionViewDataSource {
             
             if selectedImage.type == iconImage.type && selectedImage.name == iconImage.name {
                 cell.selectedIndicator.isHidden = false
+                imageCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
             }else{
                 cell.selectedIndicator.isHidden = true
             }

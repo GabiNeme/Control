@@ -20,6 +20,8 @@ class SavingsViewController: UIViewController {
     
     var savings: Results<Saving>?
     
+    var savingModifyType: ObjectModifyType = .add
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
@@ -28,8 +30,7 @@ class SavingsViewController: UIViewController {
         
         savingsTableView.register(SavingTableViewCell.nib(), forCellReuseIdentifier: SavingTableViewCell.identifier)
         savingsTableView.rowHeight = 70
-        
-        
+
         savings = realm.objects(Saving.self)
     }
     
@@ -39,6 +40,7 @@ class SavingsViewController: UIViewController {
 
     
     @IBAction func addSavingPressed(_ sender: UIBarButtonItem) {
+        savingModifyType = .add
         performSegue(withIdentifier: "setSaving", sender: self)
     }
         
@@ -102,6 +104,7 @@ extension SavingsViewController: UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         //performSegue(withIdentifier: "viewSaving", sender: self)
     }
     
@@ -109,14 +112,21 @@ extension SavingsViewController: UITableViewDelegate {
 
 //MARK: - Add new account
 
-extension SavingsViewController: setAccountDelegate {
+extension SavingsViewController: setSavingDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "addNewAccount" {
-//            let addNewAccountViewController = segue.destination as! SetAccountViewController
-//            addNewAccountViewController.delegate = self
-//
-//        }else if segue.identifier == "viewAccount" {
+        if segue.identifier == "setSaving" {
+            let setSavingViewController = segue.destination as! SetSavingViewController
+            setSavingViewController.delegate = self
+            
+            if savingModifyType == .edit {
+                if let index = savingsTableView.indexPathForSelectedRow, let saving = savings?[index.row]{
+                    setSavingViewController.editingSaving = saving
+                }
+            }
+
+        }
+        //else if segue.identifier == "viewAccount" {
 //            let accountViewController = segue.destination as! AccountViewController
 //
 //            if let indexPath = savingsTableView.indexPathForSelectedRow, let account = savings?[indexPath.row] {
@@ -127,7 +137,7 @@ extension SavingsViewController: setAccountDelegate {
 //        }
     }
     
-    func accountDataChaged() {
+    func savingDataChaged() {
         loadSavingsData()
     }
 

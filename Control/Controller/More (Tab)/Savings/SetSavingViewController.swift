@@ -22,9 +22,8 @@ class SetSavingViewController: UIViewController {
     @IBOutlet weak var goalValueTextField: UITextField!
     
     @IBOutlet weak var iconUIButton: UIButton!
-    @IBOutlet weak var ringImageView: UIImageView!
     @IBOutlet weak var topIconImageView: UIImageView!
-        
+    
     //Account Elements
     var iconImage = IconImage(type: .SFSymbol, name: "questionmark")
     var iconColor: String = "gray4"
@@ -33,7 +32,6 @@ class SetSavingViewController: UIViewController {
     
     var delegate: setSavingDelegate!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,10 +39,7 @@ class SetSavingViewController: UIViewController {
         view.addGestureRecognizer(tap)
         
         closeBarButton.layer.cornerRadius = 2.5
-        iconUIButton.layer.cornerRadius = 55
-        ringImageView.layer.cornerRadius = 50
-        ringImageView.layer.borderWidth = 5
-        ringImageView.layer.borderColor = UIColor(named: "BackgroundColor")?.cgColor
+        iconUIButton.layer.cornerRadius = 50
         
         let toolbar = KeyboardToolBar(width: view.frame.size.width, target: self, selector: #selector(doneButtonAction)).get()
         savingNameTextField.inputAccessoryView = toolbar
@@ -54,10 +49,13 @@ class SetSavingViewController: UIViewController {
         
     }
     
-
+    let editingContentView = EditingContentView()
+    
     @IBAction func iconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "setIcon", sender: self)
+        editingContentView.show()
+        editingContentView.addIconSelector(viewController: self)
+        //performSegue(withIdentifier: "setIcon", sender: self)
     }
     
     @IBAction func cancelBottomButtonPressed(_ sender: UIButton) {
@@ -80,65 +78,61 @@ extension SetSavingViewController{
     
     @IBAction func saveSavingPressed(_ sender: UIButton) {
 
-//
-//        if savingNameTextField.text == nil || savingNameTextField.text == "" {
-//
-//            let alert = Alert(title: "Preencher nome da conta", message: "A conta não pode ser criada sem um nome").get()
-//            present(alert, animated: true, completion: nil)
-//
-//            return
-//        }
-//
-//        if accountNameInUse() {
-//            let alert = Alert(title: "Nome da conta repetido", message: "Já existe uma conta com esse nome, favor escolher um novo nome.").get()
-//            present(alert, animated: true, completion: nil)
-//
-//            return
-//        }
-//
-//        if goalValueTextField.text == nil || goalValueTextField.text == "" {
-//            goalValueTextField.text = "0.00"
-//        }
-//
-//        guard let existingDelegate = delegate else {
-//            fatalError("newAccountAddedDelegate not set")
-//        }
-//
-//        let newAccount = Account(
-//            name: savingNameTextField.text!,
-//            balance: goalValueTextField.text!.extractDigitsToDouble(),
-//            iconImage: iconImage,
-//            iconColor: iconColor,
-//            addToTotal: addToTotalSwitch.isOn
-//        )
-//
-//        if let modifiedAccount = editingAccount {
-//            newAccount.savings = modifiedAccount.savings
-//            newAccount.available = newAccount.balance - modifiedAccount.savings
-//            newAccount.listPosition = modifiedAccount.listPosition
-//            modifiedAccount.edit(changeTo: newAccount)
-//        }else{
-//            newAccount.save()
-//        }
-//
-//        existingDelegate.accountDataChaged()
+        if savingNameTextField.text == nil || savingNameTextField.text == "" {
+
+            let alert = Alert(title: "Preencher nome da reserva", message: "A reserva não pode ser criada sem um nome").get()
+            present(alert, animated: true, completion: nil)
+
+            return
+        }
+
+        if savingNameInUse() {
+            let alert = Alert(title: "Nome da conta repetido", message: "Já existe uma conta com esse nome, favor escolher um novo nome.").get()
+            present(alert, animated: true, completion: nil)
+
+            return
+        }
+
+        if goalValueTextField.text == nil || goalValueTextField.text == "" {
+            goalValueTextField.text = "0.00"
+        }
+
+        guard let existingDelegate = delegate else {
+            fatalError("savingsDelegate not set")
+        }
+        
+        let newSaving = Saving(
+            name: savingNameTextField.text!,
+            savingGoal: goalValueTextField.text!.extractDigitsToDouble(),
+            iconImage: iconImage,
+            iconColor: iconColor
+        )
+        
+        if let modifiedSaving = editingSaving {
+            newSaving.saved = modifiedSaving.saved
+            modifiedSaving.edit(changeTo: newSaving)
+        }else{
+            newSaving.save()
+        }
+
+        existingDelegate.savingDataChaged()
         dismiss(animated: true, completion: nil)
         
     }
     
     
-//    func accountNameInUse() -> Bool {
-//        let currentName = savingNameTextField.text!
-//        let nameExistsInDatabase = AccountsModel().accountNameUsed(accountName: currentName)
-//
-//        //if account is being edited
-//        if let existingAccount = editingAccount {
-//            if currentName == existingAccount.name {
-//                return false
-//            }
-//        }
-//        return nameExistsInDatabase
-//    }
+    func savingNameInUse() -> Bool {
+        let currentName = savingNameTextField.text!
+        let nameExistsInDatabase = AccountsModel().accountNameUsed(accountName: currentName)
+
+        //if account is being edited
+        if let existingSaving = editingSaving {
+            if currentName == existingSaving.name {
+                return false
+            }
+        }
+        return nameExistsInDatabase
+    }
 }
 
 

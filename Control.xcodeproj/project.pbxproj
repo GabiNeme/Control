@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		640F525538855A3A9139078E /* Pods_Control.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2330706C19F4EDA86AB9D39 /* Pods_Control.framework */; };
+		7F02177C24CE787400271FE2 /* EditingContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F02177B24CE787400271FE2 /* EditingContentView.swift */; };
 		7F0EA6EF24BE6D18008ECF6B /* AccountsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0EA6EE24BE6D18008ECF6B /* AccountsModel.swift */; };
 		7F24693A24CCD78F00B82177 /* SetSavingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F24693924CCD78F00B82177 /* SetSavingViewController.swift */; };
 		7F24693C24CCEF8C00B82177 /* IconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F24693B24CCEF8C00B82177 /* IconViewController.swift */; };
@@ -19,7 +20,6 @@
 		7F2ED4D324B26C2600FD541C /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2ED4D224B26C2600FD541C /* Double.swift */; };
 		7F340C5224BD483200427635 /* ColorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F340C5124BD483200427635 /* ColorTracker.swift */; };
 		7F340C5424BD4ABE00427635 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F340C5324BD4ABE00427635 /* UIColor.swift */; };
-		7F340C5624BD4C0B00427635 /* IconColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F340C5524BD4C0B00427635 /* IconColorViewController.swift */; };
 		7F35859424C687EA00354DEB /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F35859324C687EA00354DEB /* CategoryModel.swift */; };
 		7F35859624C68D2D00354DEB /* SubcategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F35859524C68D2D00354DEB /* SubcategoriesViewController.swift */; };
 		7F3B6FC324C678A300E19842 /* SetCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3B6FC224C678A300E19842 /* SetCategoryViewController.swift */; };
@@ -38,9 +38,9 @@
 		7F6FC6A524BBBB9900A0685A /* ImageTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6FC6A424BBBB9900A0685A /* ImageTracker.swift */; };
 		7F9288D424C6651F003C5B30 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9288D224C6651F003C5B30 /* CategoryTableViewCell.swift */; };
 		7F9288D524C6651F003C5B30 /* CategoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F9288D324C6651F003C5B30 /* CategoryTableViewCell.xib */; };
-		7F993BD424BB9AFB00ED479E /* IconImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F993BD324BB9AFB00ED479E /* IconImageViewController.swift */; };
 		7F9B239F24C657DB0034AB60 /* MoreTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9B239E24C657DB0034AB60 /* MoreTabViewController.swift */; };
 		7FAA1F3F24AD768100D00F5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FAA1F3E24AD768100D00F5F /* Assets.xcassets */; };
+		7FACE12424CE4A56006DC56F /* SavingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FACE12324CE4A56006DC56F /* SavingModel.swift */; };
 		7FAF804024CA79D9001A09BD /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAF803E24CA79D9001A09BD /* CategoryCollectionViewCell.swift */; };
 		7FAF804124CA79D9001A09BD /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FAF803F24CA79D9001A09BD /* CategoryCollectionViewCell.xib */; };
 		7FB216AE24AD45DD00056736 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB216AD24AD45DD00056736 /* AppDelegate.swift */; };
@@ -67,6 +67,7 @@
 /* Begin PBXFileReference section */
 		0AB04B93757CA66CB4A9680E /* Pods-Control.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Control.debug.xcconfig"; path = "Target Support Files/Pods-Control/Pods-Control.debug.xcconfig"; sourceTree = "<group>"; };
 		45CF6059E1883C377FEB6EFE /* Pods-Control.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Control.release.xcconfig"; path = "Target Support Files/Pods-Control/Pods-Control.release.xcconfig"; sourceTree = "<group>"; };
+		7F02177B24CE787400271FE2 /* EditingContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditingContentView.swift; sourceTree = "<group>"; };
 		7F0EA6EE24BE6D18008ECF6B /* AccountsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsModel.swift; sourceTree = "<group>"; };
 		7F24693924CCD78F00B82177 /* SetSavingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSavingViewController.swift; sourceTree = "<group>"; };
 		7F24693B24CCEF8C00B82177 /* IconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewController.swift; sourceTree = "<group>"; };
@@ -78,7 +79,6 @@
 		7F2ED4D224B26C2600FD541C /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		7F340C5124BD483200427635 /* ColorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTracker.swift; sourceTree = "<group>"; };
 		7F340C5324BD4ABE00427635 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		7F340C5524BD4C0B00427635 /* IconColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconColorViewController.swift; sourceTree = "<group>"; };
 		7F35859324C687EA00354DEB /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		7F35859524C68D2D00354DEB /* SubcategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoriesViewController.swift; sourceTree = "<group>"; };
 		7F3B6FC224C678A300E19842 /* SetCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCategoryViewController.swift; sourceTree = "<group>"; };
@@ -97,9 +97,9 @@
 		7F6FC6A424BBBB9900A0685A /* ImageTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTracker.swift; sourceTree = "<group>"; };
 		7F9288D224C6651F003C5B30 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		7F9288D324C6651F003C5B30 /* CategoryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryTableViewCell.xib; sourceTree = "<group>"; };
-		7F993BD324BB9AFB00ED479E /* IconImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageViewController.swift; sourceTree = "<group>"; };
 		7F9B239E24C657DB0034AB60 /* MoreTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreTabViewController.swift; sourceTree = "<group>"; };
 		7FAA1F3E24AD768100D00F5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7FACE12324CE4A56006DC56F /* SavingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingModel.swift; sourceTree = "<group>"; };
 		7FAF803E24CA79D9001A09BD /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		7FAF803F24CA79D9001A09BD /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		7FB216AA24AD45DD00056736 /* Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Control.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +161,7 @@
 				7F2ED4CB24B224B900FD541C /* CurrencyTextField.swift */,
 				7FDB355224C643C70031CD94 /* Alert.swift */,
 				7FDB355424C645530031CD94 /* KeyboardToolBar.swift */,
+				7F02177B24CE787400271FE2 /* EditingContentView.swift */,
 				7FB3D28E24CCBEAC0000D736 /* TrailingSwipeForEditAndDelete.swift */,
 				7FB3D29024CCCB750000D736 /* HepticTouchForEditAndDelete.swift */,
 			);
@@ -191,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				7F5CF35D24C8916A000EC0D4 /* Saving.swift */,
+				7FACE12324CE4A56006DC56F /* SavingModel.swift */,
 			);
 			path = Savings;
 			sourceTree = "<group>";
@@ -262,8 +264,6 @@
 		7F993BD224BB9ABC00ED479E /* Icons */ = {
 			isa = PBXGroup;
 			children = (
-				7F993BD324BB9AFB00ED479E /* IconImageViewController.swift */,
-				7F340C5524BD4C0B00427635 /* IconColorViewController.swift */,
 				7F24693B24CCEF8C00B82177 /* IconViewController.swift */,
 			);
 			path = Icons;
@@ -513,8 +513,10 @@
 				7F2ED4D124B22A7B00FD541C /* Formatter.swift in Sources */,
 				7FB216B424AD45DD00056736 /* SecondViewController.swift in Sources */,
 				7FB216C624AD4B5400056736 /* Account.swift in Sources */,
+				7FACE12424CE4A56006DC56F /* SavingModel.swift in Sources */,
 				7FEAC13824CA034E00095779 /* ObjectModifyType.swift in Sources */,
 				7FDB355324C643C70031CD94 /* Alert.swift in Sources */,
+				7F02177C24CE787400271FE2 /* EditingContentView.swift in Sources */,
 				7F6FC6A124BBA90F00A0685A /* Icon.swift in Sources */,
 				7FF356A124CA19510076F961 /* SetSubcategoryViewController.swift in Sources */,
 				7F2ED4CF24B22A7200FD541C /* String.swift in Sources */,
@@ -547,11 +549,9 @@
 				7F62B39E24BB9EAF00D5998D /* IconImageCollectionViewCell.swift in Sources */,
 				7FB216AE24AD45DD00056736 /* AppDelegate.swift in Sources */,
 				7F35859624C68D2D00354DEB /* SubcategoriesViewController.swift in Sources */,
-				7F993BD424BB9AFB00ED479E /* IconImageViewController.swift in Sources */,
 				7F2ED4D324B26C2600FD541C /* Double.swift in Sources */,
 				7FB216B024AD45DD00056736 /* SceneDelegate.swift in Sources */,
 				7F9B239F24C657DB0034AB60 /* MoreTabViewController.swift in Sources */,
-				7F340C5624BD4C0B00427635 /* IconColorViewController.swift in Sources */,
 				7F64F20124C6676D0099DA4F /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
