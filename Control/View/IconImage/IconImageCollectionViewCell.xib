@@ -29,7 +29,6 @@
                                 <color key="tintColor" name="LabelColor"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="OPf-a3-3E1" firstAttribute="leading" secondItem="iGm-6c-q3r" secondAttribute="leading" id="8DA-GR-EG9"/>
                             <constraint firstAttribute="bottom" secondItem="LOK-Ae-ltP" secondAttribute="bottom" constant="5" id="8GW-Od-zfV"/>

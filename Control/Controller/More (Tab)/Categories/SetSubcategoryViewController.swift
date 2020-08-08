@@ -59,7 +59,7 @@ class SetSubcategoryViewController: UIViewController {
         parentCategoriesCollectionView.register(CategoryCollectionViewCell.nib(), forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         parentCategoriesCollectionView.dataSource = self
         parentCategoriesCollectionView.delegate = self
-        categories = realm.objects(Category.self).filter(NSPredicate(format: "type = %@", parentCategory.type)).sorted(byKeyPath: "name")
+        categories = realm.objects(Category.self).filter(NSPredicate(format: "privateType = %@", parentCategory.type.rawValue)).sorted(byKeyPath: "name")
         
         if let index = categories?.index(of: parentCategory) {
             let indexPath = IndexPath(row: index, section: 0)
@@ -72,11 +72,11 @@ class SetSubcategoryViewController: UIViewController {
         parentCategoriesCollectionView.allowsMultipleSelection = false
     }
     
+    let editingContentView = EditingContentView()
     
-
     @IBAction func categoryIconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "setIcon", sender: self)
+        editingContentView.showIconSelector(viewController: self, selectedImage: iconImage, selectedColor: "", onlyImage: true)
     }
 
 
@@ -176,23 +176,13 @@ extension SetSubcategoryViewController {
 
 //MARK: - Icon image
 
-extension SetSubcategoryViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "setIcon" {
-            let destinationSegue = segue.destination as! IconViewController
-            destinationSegue.delegate = self
-            destinationSegue.selectedImage = iconImage
-            if let index = selectedCategoryIndex, let selectedCategory = categories?[index] {
-                destinationSegue.selectedColor = selectedCategory.iconColor
-            }
-            destinationSegue.onlyImage = true
-        }
-    }
-}
-
 
 extension SetSubcategoryViewController : IconSelectorDelegate {
-    func iconSelected(color: String, image: IconImage) {
+    func iconColorSelected(color: String) {
+        
+    }
+    
+    func iconImageSelected(image: IconImage) {
         iconImage = image
         updateIcon()
     }

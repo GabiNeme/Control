@@ -50,10 +50,11 @@ class SetAccountViewController: UIViewController {
         loadAccount()
     }
     
-
+    let editingContentView = EditingContentView()
+    
     @IBAction func accountIconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "setIcon", sender: self)
+        editingContentView.showIconSelector(viewController: self, selectedImage: iconImage, selectedColor: iconColor)
     }
     
     @IBAction func closeBottomButtonPressed(_ sender: UIButton) {
@@ -125,7 +126,7 @@ extension SetAccountViewController{
     
     func accountNameInUse() -> Bool {
         let currentName = accountNameTextField.text!
-        let nameExistsInDatabase = AccountsModel().accountNameUsed(accountName: currentName)
+        let nameExistsInDatabase = ObjectsModel().nameUsed(Account.self, name: currentName)
         
         //if account is being edited
         if let existingAccount = editingAccount {
@@ -163,21 +164,13 @@ extension SetAccountViewController {
 
 //MARK: - Icon color and image
 
-extension SetAccountViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "setIcon" {
-            let destinationSegue = segue.destination as! IconViewController
-            destinationSegue.delegate = self
-            destinationSegue.selectedImage = iconImage
-            destinationSegue.selectedColor = iconColor
-        }
-    }
-}
-
-
 extension SetAccountViewController : IconSelectorDelegate {
-    func iconSelected(color: String, image: IconImage) {
+    func iconColorSelected(color: String) {
         iconColor = color
+        updateIcon()
+    }
+    
+    func iconImageSelected(image: IconImage) {
         iconImage = image
         updateIcon()
     }

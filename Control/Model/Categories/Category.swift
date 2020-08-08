@@ -10,7 +10,19 @@ import Foundation
 import RealmSwift
 
 class Category: Object {
-    @objc dynamic var type: String = ""
+    @objc dynamic var privateType: String = ""
+    var type: TransactionType {
+        get{
+            if let transactionType = TransactionType(rawValue: privateType){
+                return transactionType
+            } else {
+                return .expense
+            }
+        }
+        set{
+            privateType = newValue.rawValue
+        }
+    }
     
     @objc dynamic var name: String = ""
     
@@ -21,7 +33,8 @@ class Category: Object {
     let subcategories = List<Subcategory>()
     
     
-    init(type: String, name: String, iconImage: IconImage, iconColor: String) {
+    init(type: TransactionType, name: String, iconImage: IconImage, iconColor: String) {
+        super.init()
         
         self.type = type
         

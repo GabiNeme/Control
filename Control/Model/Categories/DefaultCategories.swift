@@ -26,8 +26,8 @@ struct DefaultCategories {
     }
     
     func createCategories(){
-        let incomeType = "income"
-        let expenseType = "expense"
+        let incomeType : TransactionType = .income
+        let expenseType : TransactionType = .expense
         
         //Receita
         let income1 = Category(
@@ -406,15 +406,7 @@ struct DefaultCategories {
             print("Error saving incomes: \(error)")
         }
         
-        
-        let savingTest = Saving(name: "Celular", savingGoal: 3000, iconImage: IconImage(type: .external, name: "phone_iphone"), iconColor: "blue3")
-        savingTest.saved = 2000
-        savingTest.save()
-        
-        let savingTest2 = Saving(name: "Casa", savingGoal: 0, iconImage: IconImage(type: .SFSymbol, name: "house"), iconColor: "pink1")
-        savingTest2.saved = 2000
-        savingTest2.save()
-        
+    
         
     }
     

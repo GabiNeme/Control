@@ -20,13 +20,7 @@ struct AccountsModel {
         return lastPosition + 1
         
     }
-        
-    func accountNameUsed(accountName: String) ->Bool {
-        let accountNames = realm.objects(Account.self).filter(NSPredicate(format:"name == %@", accountName)).count
-        
-        return !(accountNames == 0)
-    }
-    
+           
     func swapAccounts(account1: Account, account2: Account) {
         
         let tempPosition = account1.listPosition

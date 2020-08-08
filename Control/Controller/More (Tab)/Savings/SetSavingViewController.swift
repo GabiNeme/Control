@@ -45,6 +45,7 @@ class SetSavingViewController: UIViewController {
         savingNameTextField.inputAccessoryView = toolbar
         goalValueTextField.inputAccessoryView = toolbar
         
+        loadSaving()
         updateIcon()
         
     }
@@ -53,9 +54,7 @@ class SetSavingViewController: UIViewController {
     
     @IBAction func iconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        editingContentView.show()
-        editingContentView.addIconSelector(viewController: self)
-        //performSegue(withIdentifier: "setIcon", sender: self)
+        editingContentView.showIconSelector(viewController: self, selectedImage: iconImage, selectedColor: iconColor)
     }
     
     @IBAction func cancelBottomButtonPressed(_ sender: UIButton) {
@@ -123,7 +122,7 @@ extension SetSavingViewController{
     
     func savingNameInUse() -> Bool {
         let currentName = savingNameTextField.text!
-        let nameExistsInDatabase = AccountsModel().accountNameUsed(accountName: currentName)
+        let nameExistsInDatabase = ObjectsModel().nameUsed(Saving.self, name: currentName)
 
         //if account is being edited
         if let existingSaving = editingSaving {
@@ -148,6 +147,7 @@ extension SetSavingViewController {
             iconColor = saving.iconColor
             
             savingNameTextField.text = saving.name
+            goalValueTextField.text = saving.savingGoal.toCurrency()
         }
         
         updateIcon()
@@ -159,21 +159,13 @@ extension SetSavingViewController {
 
 //MARK: - Icon color and image
 
-extension SetSavingViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "setIcon" {
-            let destinationSegue = segue.destination as! IconViewController
-            destinationSegue.delegate = self
-            destinationSegue.selectedImage = iconImage
-            destinationSegue.selectedColor = iconColor
-        }
-    }
-}
-
-
 extension SetSavingViewController : IconSelectorDelegate {
-    func iconSelected(color: String, image: IconImage) {
+    func iconColorSelected(color: String) {
         iconColor = color
+        updateIcon()
+    }
+    
+    func iconImageSelected(image: IconImage) {
         iconImage = image
         updateIcon()
     }

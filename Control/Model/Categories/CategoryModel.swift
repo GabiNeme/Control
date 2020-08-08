@@ -13,12 +13,6 @@ struct CategoryModel {
     
     let realm = try! Realm()
     
-    func categoryNameUsed(categoryName: String) ->Bool {
-        let categories = realm.objects(Category.self).filter(NSPredicate(format:"name == %@", categoryName)).count
-        
-        return !(categories == 0)
-    }
-    
     func subcategoryNameUsed(parentCategory: Category,  subcategoryName: String) ->Bool {
         let subcategories = parentCategory.subcategories.filter("name = %@", subcategoryName).count
         

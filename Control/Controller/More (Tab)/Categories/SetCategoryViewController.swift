@@ -29,7 +29,7 @@ class SetCategoryViewController: UIViewController {
     private var iconColor: String = "gray4"
     
     var editingCategory: Category?
-    var categoryType: String?
+    var categoryType: TransactionType?
     
     var delegate: setCategoryDelegate!
     
@@ -49,10 +49,11 @@ class SetCategoryViewController: UIViewController {
         loadCategory()
     }
     
-
+    let editingContentView = EditingContentView()
+    
     @IBAction func categoryIconPressed(_ sender: UIButton) {
         self.view.endEditing(true)
-        performSegue(withIdentifier: "setIcon", sender: self)
+        editingContentView.showIconSelector(viewController: self, selectedImage: iconImage, selectedColor: iconColor)
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
@@ -91,7 +92,7 @@ extension SetCategoryViewController{
         
         //If editing category
         if let category = editingCategory {
-            if categoryName != category.name && CategoryModel().categoryNameUsed(categoryName: categoryName){
+            if categoryName != category.name && ObjectsModel().nameUsed(Category.self, name: categoryName) {
                 showRepeatedNameAlert()
                 return
             } else {
@@ -100,7 +101,7 @@ extension SetCategoryViewController{
             
         //if new category
         } else{
-            if CategoryModel().categoryNameUsed(categoryName: categoryName){
+            if ObjectsModel().nameUsed(Category.self, name: categoryName){
                 showRepeatedNameAlert()
                 return
             }else{
@@ -148,21 +149,13 @@ extension SetCategoryViewController {
 
 //MARK: - Icon color and image
 
-extension SetCategoryViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "setIcon" {
-            let destinationSegue = segue.destination as! IconViewController
-            destinationSegue.delegate = self
-            destinationSegue.selectedImage = iconImage
-            destinationSegue.selectedColor = iconColor
-        }
-    }
-}
-
-
 extension SetCategoryViewController : IconSelectorDelegate {
-    func iconSelected(color: String, image: IconImage) {
+    func iconColorSelected(color: String) {
         iconColor = color
+        updateIcon()
+    }
+    
+    func iconImageSelected(image: IconImage) {
         iconImage = image
         updateIcon()
     }

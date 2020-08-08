@@ -21,6 +21,7 @@ class SavingsViewController: UIViewController {
     var savings: Results<Saving>?
     
     var savingModifyType: ObjectModifyType = .add
+    var savingIndexToEdit: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,23 +93,53 @@ extension SavingsViewController: UITableViewDataSource {
 
 extension SavingsViewController: UITableViewDelegate {
     
-      
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-//            if let saving = savings?[indexPath.row] {
-//                AccountsModel().deleteAccount(account: account)
-//            }
-        }
-        loadSavingsData()
-    }
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //performSegue(withIdentifier: "viewSaving", sender: self)
+        performSegue(withIdentifier: "viewSaving", sender: self)
     }
     
 }
+
+//MARK: - Swipe tableview methods
+
+extension SavingsViewController {
+    
+   
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+        return TrailingSwipeForEditAndDelete().get(
+            editHandler: { (_, _, complete) in
+                complete(true)
+                self.editSaving(indexPathRow: indexPath.row)
+            },
+            deleteHandler:  { (_, _, complete) in
+                complete(true)
+                self.deleteSaving(indexPathRow: indexPath.row)
+            })
+    
+    }
+    
+
+}
+
+//MARK: - Haptic/Force Touch menu
+
+extension SavingsViewController {
+
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        return HepticTouchForEditAndDelete().get(
+            editHandler: { (_) in
+                self.editSaving(indexPathRow: indexPath.row)
+            }, deleteHandler:  { (_) in
+                self.deleteSaving(indexPathRow: indexPath.row)
+            })
+        
+    }
+    
+}
+
 
 //MARK: - Add new account
 
@@ -120,21 +151,21 @@ extension SavingsViewController: setSavingDelegate {
             setSavingViewController.delegate = self
             
             if savingModifyType == .edit {
-                if let index = savingsTableView.indexPathForSelectedRow, let saving = savings?[index.row]{
+                if let index = savingIndexToEdit, let saving = savings?[index] {
                     setSavingViewController.editingSaving = saving
                 }
             }
 
         }
-        //else if segue.identifier == "viewAccount" {
-//            let accountViewController = segue.destination as! AccountViewController
-//
-//            if let indexPath = savingsTableView.indexPathForSelectedRow, let account = savings?[indexPath.row] {
-//                accountViewController.account = account
-//            }
-//
-//
-//        }
+        else if segue.identifier == "viewSaving" {
+            let savingViewController = segue.destination as! SavingViewController
+
+            if let indexPath = savingsTableView.indexPathForSelectedRow, let saving = savings?[indexPath.row] {
+                savingViewController.saving = saving
+            }
+
+
+        }
     }
     
     func savingDataChaged() {
@@ -143,32 +174,52 @@ extension SavingsViewController: setSavingDelegate {
 
 }
 
+
+extension SavingsViewController {
+    //MARK: - Edit saving
+    func editSaving(indexPathRow: Int){
+        savingModifyType = .edit
+        savingIndexToEdit = indexPathRow
+        
+        performSegue(withIdentifier: "setSaving", sender: self)
+    }
+    
+    
+    
+    //MARK: - Delete saving
+    
+    func deleteSaving(indexPathRow: Int) {
+        if let saving = savings?[indexPathRow] {
+            saving.delete()
+        }
+        savingsTableView.deleteRows(at: [IndexPath(row: indexPathRow, section: 0)], with: .automatic)
+        computeTotalSaving()
+    }
+    
+    
+}
+
 //MARK: - Compute account values
 
 extension SavingsViewController {
     
     func loadSavingsData(){
         savingsTableView.reloadData()
-        computeTotalAccounts()
+        computeTotalSaving()
     }
     
     
-    func computeTotalAccounts(){
-        //var total = 0.00
+    func computeTotalSaving(){
+        var total = 0.00
         
-//        if let existingSavings = savings {
-//            for saving in existingSavings {
-//
-//                    total += account.balance
-//                    savings += account.savings
-//                    available += account.available
-//                }
-//            }
-//        }
-//
-//        totalBalanceValue.text = total.toCurrency()
-//        savingsValue.text = savings.toCurrency()
-//        availableBalance.text = available.toCurrency()
+        if let existingSavings = savings {
+            for saving in existingSavings {
+
+                total += saving.saved
+            }
+        }
+
+        savingsValue.text = total.toCurrency()
     }
     
     

@@ -15,7 +15,7 @@ class CategoriesViewController: UIViewController {
     @IBOutlet weak var categoriesTableView: UITableView!
     
     let realm = try! Realm()
-    var type: String = "expense"
+    var type: TransactionType = .expense
     var categories: Results<Category>?
     
     var categoryModifyType: ObjectModifyType = .add
@@ -30,7 +30,7 @@ class CategoriesViewController: UIViewController {
         categoriesTableView.register(CategoryTableViewCell.nib(), forCellReuseIdentifier: CategoryTableViewCell.identifier)
         categoriesTableView.rowHeight = 50
         
-        categories = realm.objects(Category.self).filter(NSPredicate(format: "type = %@", type)).sorted(byKeyPath: "name")
+        categories = realm.objects(Category.self).filter(NSPredicate(format: "privateType = %@", type.rawValue)).sorted(byKeyPath: "name")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +46,11 @@ extension CategoriesViewController {
     
     @IBAction func categoryTypeSegmentedControlPressed(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
-            type = "expense"
+            type = .expense
         }else{
-            type = "income"
+            type = .income
         }
-        categories = realm.objects(Category.self).filter(NSPredicate(format: "type = %@", type)).sorted(byKeyPath: "name")
+        categories = realm.objects(Category.self).filter(NSPredicate(format: "privateType = %@", type.rawValue)).sorted(byKeyPath: "name")
         categoriesTableView.reloadData()
     }
     

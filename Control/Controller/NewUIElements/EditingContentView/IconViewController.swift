@@ -10,21 +10,17 @@
 import UIKit
 
 protocol IconSelectorDelegate {
-    func iconSelected(color: String, image: IconImage)
+    func iconColorSelected(color: String)
+    func iconImageSelected(image: IconImage)
+    
 }
 
 class IconViewController: UIViewController {
     
-    @IBOutlet weak var closerBarButton: UIButton!
-    
     @IBOutlet weak var colorCollectionView: UICollectionView!
     @IBOutlet weak var imageCollectionView: UICollectionView!
-
-    @IBOutlet weak var backgroundColorImageView: UIImageView!
-    @IBOutlet weak var imageImageView: UIImageView!
        
     @IBOutlet weak var segmentControlView: UIView!
-    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var imageView: UIView!
     
@@ -45,29 +41,13 @@ class IconViewController: UIViewController {
         colorCollectionView.register(IconColorCollectionViewCell.nib(), forCellWithReuseIdentifier: IconColorCollectionViewCell.identifier)
         imageCollectionView.register(IconImageCollectionViewCell.nib(), forCellWithReuseIdentifier: IconImageCollectionViewCell.identifier)
         
-        backgroundColorImageView.layer.cornerRadius = 50
-        closerBarButton.layer.cornerRadius = 2.5
-        
-        selectedColor = "gray4"
-        selectedImage = IconImage(type: .SFSymbol, name: "questionmark")
-        
         if onlyImage {
             segmentControlView.isHidden = true
-            separatorView.isHidden = true
             colorView.isHidden = true
         }
-        
-        updateIcon()
     }
 
-    @IBAction func closeBarButtonPressed(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func doneButtonPressed(_ sender: UIButton) {
-        delegate.iconSelected(color: selectedColor, image: selectedImage)
-        dismiss(animated: true, completion: nil)
-    }
+
     
     @IBAction func colorOrImageSegmentedControl(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
@@ -92,14 +72,13 @@ extension IconViewController: UICollectionViewDelegate{
                 cell.selectionIndicator.isHidden = false
             }
             selectedColor = colors.getName(index: indexPath.row)
-            updateColor()
-            
+            delegate.iconColorSelected(color: selectedColor)
         }else if collectionView == imageCollectionView {
             if let cell = imageCollectionView.cellForItem(at: indexPath) as? IconImageCollectionViewCell{
                 cell.selectedIndicator.isHidden = false
             }
             selectedImage = images.getImage(index: indexPath.row)
-            updateImage()
+            delegate.iconImageSelected(image: selectedImage)
         }
         
     }
@@ -128,6 +107,8 @@ extension IconViewController: UICollectionViewDataSource {
         }
         return 0
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -168,22 +149,4 @@ extension IconViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 40, height: 40)
     }
-}
-
-
-extension IconViewController {
-    
-    func updateIcon(){
-        updateColor()
-        updateImage()
-    }
-    
-    func updateColor(){
-        backgroundColorImageView.backgroundColor = UIColor(named: selectedColor)
-    }
-    
-    func updateImage(){
-        imageImageView.image = selectedImage.getImage()
-    }
-
 }

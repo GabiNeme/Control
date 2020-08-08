@@ -15,6 +15,10 @@ class SecondViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func addTransactionButtonPressed(_ sender: UIBarButtonItem) {
+        
+        performSegue(withIdentifier: "setTransaction", sender: self)
+    }
+    
 }
 
